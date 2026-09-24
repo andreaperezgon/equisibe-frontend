@@ -22,7 +22,9 @@ import heroHome from '../../assets/hero-home.jpeg'
           Taller de confección
         </p>
 
-        <h1 class="mt-4 max-w-3xl text-5xl font-bold leading-tight md:text-7xl">
+        <h1 class="mt-4 max-w-3xl text-3xl font-bold leading-tight sm:text-4xl md:text-7xl">
+  Ropa hecha desde cero, a la medida de quien la lleva
+</h1>h1 class="mt-4 max-w-3xl text-5xl font-bold leading-tight md:text-7xl">
           Ropa hecha desde cero, a la medida de quien la lleva
         </h1>
 
