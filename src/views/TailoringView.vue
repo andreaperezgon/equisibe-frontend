@@ -1,6 +1,7 @@
 <script setup>
 import TailoringProcess from '../components/tailoring/TailoringProcess.vue'
 import TailoringServices from '../components/tailoring/TailoringServices.vue'
+import TailoringContactCta from '../components/tailoring/TailoringContactCta.vue'
 </script>
 <template>
   <main>
@@ -20,5 +21,6 @@ import TailoringServices from '../components/tailoring/TailoringServices.vue'
     </section>
     <TailoringProcess />
     <TailoringServices />
+    <TailoringContactCta />
   </main>
 </template>
