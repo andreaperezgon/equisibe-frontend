@@ -2,6 +2,7 @@
 import HomeHero from '../components/home/HomeHero.vue'
 import HomeAbout from '../components/home/HomeAbout.vue'
 import HomeServices from '../components/home/HomeServices.vue'
+import HomeGallery from '../components/home/HomeGallery.vue'
 </script>
 
 <template>
@@ -9,5 +10,6 @@ import HomeServices from '../components/home/HomeServices.vue'
     <HomeHero />
     <HomeAbout />
     <HomeServices />
+    <HomeGallery />
   </main>
 </template>
