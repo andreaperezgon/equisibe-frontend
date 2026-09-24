@@ -22,23 +22,23 @@ const teamMembers = [
 <template>
   <main>
     <!-- Introducción -->
-    <section class="mx-auto max-w-6xl px-5 py-20 md:py-28">
+    <section class="mx-auto max-w-7xl px-5 py-20 md:py-28">
       <p class="text-sm uppercase tracking-widest">
         Quiénes somos
       </p>
 
-      <h1 class="mt-4 max-w-3xl text-4xl font-semibold md:text-6xl">
+<h1 class="mt-4 text-4xl font-semibold md:text-6xl">
         Las personas detrás de Equisibé
       </h1>
 
-      <p class="mt-6 max-w-2xl leading-relaxed text-gray-600">
+<p class="mt-6 max-w-4xl leading-relaxed text-gray-600">
         Equisibé nace de la pasión por la confección, el patronaje
         y la sastrería hecha a medida.
       </p>
     </section>
 
     <!-- Equipo -->
-    <section class="mx-auto max-w-6xl px-5 pb-20 md:pb-28">
+    <section class="mx-auto max-w-7xl px-5 pb-20 md:pb-28">
       <div class="flex flex-col gap-20">
         <TeamMember
           v-for="member in teamMembers"
