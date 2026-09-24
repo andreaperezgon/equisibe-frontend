@@ -1,5 +1,5 @@
 <script setup>
-import heroHome from '../../assets/hero-home.png'
+import heroHome from '../../assets/hero-home.jpeg'
 </script>
 
 <template>
