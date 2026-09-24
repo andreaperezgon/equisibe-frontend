@@ -29,9 +29,10 @@ const closeMenu = () => {
           alt="Equisibé"
           class="h-10 w-auto object-contain md:h-12"
         />
-    </RouterLink>
+      </RouterLink>
+
       <!-- Navegación escritorio -->
-      <nav class="hidden items-center gap-14 md:flex">
+      <nav class="hidden items-center gap-14 lg:flex">
         <RouterLink
           to="/"
           class="font-bold transition hover:opacity-60"
@@ -69,7 +70,7 @@ const closeMenu = () => {
       </nav>
 
       <!-- Usuario y cesta escritorio -->
-      <div class="hidden items-center gap-5 md:flex">
+      <div class="hidden items-center gap-5 lg:flex">
         <RouterLink
           to="/login"
           class="border-2 border-black px-5 py-2 text-sm font-bold transition hover:bg-black hover:text-white"
@@ -101,10 +102,10 @@ const closeMenu = () => {
         </RouterLink>
       </div>
 
-      <!-- Botón hamburguesa móvil -->
+      <!-- Botón hamburguesa móvil y tablet -->
       <button
         type="button"
-        class="flex flex-col gap-1.5 md:hidden"
+        class="flex flex-col gap-1.5 lg:hidden"
         :aria-label="isMenuOpen ? 'Cerrar menú' : 'Abrir menú'"
         @click="toggleMenu"
       >
@@ -114,10 +115,10 @@ const closeMenu = () => {
       </button>
     </div>
 
-    <!-- Menú móvil -->
+    <!-- Menú móvil y tablet -->
     <nav
       v-if="isMenuOpen"
-      class="flex flex-col border-t border-black/10 px-5 py-6 md:hidden"
+      class="flex flex-col border-t border-black/10 px-5 py-6 lg:hidden"
     >
       <div class="flex flex-col gap-5">
         <RouterLink
@@ -173,6 +174,7 @@ const closeMenu = () => {
         <RouterLink
           to="/cart"
           aria-label="Ver cesta"
+          class="transition hover:opacity-60"
           @click="closeMenu"
         >
           <svg
