@@ -3,9 +3,9 @@
     <section>
       <p>Taller de confección</p>
 
-      <h1>
-        Ropa hecha desde cero, a la medida de quien la lleva
-      </h1>
+      <h1 class="text-5xl font-bold">
+  Ropa hecha desde cero, a la medida de quien la lleva
+</h1>
 
       <p>
         En Equisibé cortamos, cosemos y arreglamos. Trajes, vestidos y
