@@ -1,3 +1,6 @@
+<script setup>
+import TailoringProcess from '../components/tailoring/TailoringProcess.vue'
+</script>
 <template>
   <main>
     <section class="mx-auto max-w-7xl px-5 py-20 md:py-28">
@@ -14,5 +17,6 @@
         se confecciona de forma personalizada y cuidando cada detalle.
       </p>
     </section>
+    <TailoringProcess />
   </main>
 </template>
