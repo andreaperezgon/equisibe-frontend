@@ -1,3 +1,7 @@
+<script setup>
+import ContactForm from '../components/contact/ContactForm.vue'
+</script>
+
 <template>
   <main class="mx-auto max-w-7xl px-5 py-16 md:py-24">
     <section>
@@ -17,13 +21,10 @@
     </section>
 
     <div class="mt-14 grid gap-12 lg:grid-cols-2">
+      <ContactForm />
 
-      <!-- Aquí irá el formulario -->
+      <!-- Datos de contacto y mapa: lo haremos después -->
       <div class="min-h-96 border border-black/15"></div>
-
-      <!-- Aquí irán los datos de contacto y el mapa -->
-      <div class="min-h-96 border border-black/15"></div>
-
     </div>
   </main>
 </template>

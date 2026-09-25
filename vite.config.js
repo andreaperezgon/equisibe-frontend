@@ -7,4 +7,8 @@ export default defineConfig({
     vue(),
     tailwindcss(),
   ],
+
+  test: {
+    environment: 'jsdom',
+  },
 })
