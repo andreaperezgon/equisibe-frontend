@@ -22,4 +22,4 @@
       </RouterLink>
     </div>
   </section>
-</template>
+</template>        
