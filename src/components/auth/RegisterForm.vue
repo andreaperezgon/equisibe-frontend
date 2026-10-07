@@ -1,5 +1,5 @@
 <script setup>
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 
 const form = reactive({
   name: '',
@@ -7,6 +7,9 @@ const form = reactive({
   password: '',
   confirmPassword: '',
 })
+const errorMessage = ref('')
+const showPassword = ref(false)
+const showConfirmPassword = ref(false)
 </script>
 <template>
   <form @submit.prevent>
@@ -29,25 +32,70 @@ const form = reactive({
   class="mt-2 w-full border border-black/20 bg-transparent px-4 py-3"
 />
 <label for="password" class="mt-5 block">Contraseña</label>
-<input
-  id="password"
-  v-model="form.password"
-  type="password"
-  autocomplete="new-password"
-  minlength="8"
-  required
-  class="mt-2 w-full border border-black/20 bg-transparent px-4 py-3"
-/>
+<div class="relative mt-2">
+  <input
+    id="password"
+    v-model="form.password"
+    :type="showPassword ? 'text' : 'password'"
+    autocomplete="new-password"
+    minlength="8"
+    required
+    class="w-full border border-black/20 bg-transparent py-3 pl-4 pr-12"
+  />
+  <button
+    type="button"
+    :aria-label="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+    :aria-pressed="showPassword"
+    class="absolute inset-y-0 right-2 flex items-center p-2"
+    @click="showPassword = !showPassword"
+  >
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+      class="h-5 w-5"
+      aria-hidden="true"
+    >
+      <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7S2 12 2 12Z" />
+      <circle cx="12" cy="12" r="3" />
+      <path v-if="showPassword" d="m3 3 18 18" />
+    </svg>
+  </button>
+</div>
+
 <label for="confirmPassword" class="mt-5 block">Repetir contraseña</label>
-<input
-  id="confirmPassword"
-  v-model="form.confirmPassword"
-  type="password"
-  autocomplete="new-password"
-  minlength="8"
-  required
-  class="mt-2 w-full border border-black/20 bg-transparent px-4 py-3"
-/>
+<div class="relative mt-2">
+  <input
+    id="confirmPassword"
+    v-model="form.confirmPassword"
+    :type="showConfirmPassword ? 'text' : 'password'"
+    autocomplete="new-password"
+    minlength="8"
+    required
+    class="w-full border border-black/20 bg-transparent py-3 pl-4 pr-12"
+  />
+  <button
+    type="button"
+    :aria-label="showConfirmPassword ? 'Ocultar confirmación de contraseña' : 'Mostrar confirmación de contraseña'"
+    :aria-pressed="showConfirmPassword"
+    class="absolute inset-y-0 right-2 flex items-center p-2"
+    @click="showConfirmPassword = !showConfirmPassword"
+  >
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+      class="h-5 w-5"
+      aria-hidden="true"
+    >
+      <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7S2 12 2 12Z" />
+      <circle cx="12" cy="12" r="3" />
+      <path v-if="showConfirmPassword" d="m3 3 18 18" />
+    </svg>
+  </button>
+</div>
 <button
   type="submit"
   class="mt-6 w-full border-2 border-black px-5 py-3 font-bold transition hover:bg-black hover:text-white"
