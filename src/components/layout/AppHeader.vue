@@ -51,7 +51,7 @@ const closeMenu = () => {
           to="/tailoring"
           class="font-bold transition hover:opacity-60"
         >
-          Sastrería a medida
+          A medida
         </RouterLink>
 
         <RouterLink
@@ -142,7 +142,7 @@ const closeMenu = () => {
           class="font-bold"
           @click="closeMenu"
         >
-          Sastrería a medida
+          A medida
         </RouterLink>
 
         <RouterLink

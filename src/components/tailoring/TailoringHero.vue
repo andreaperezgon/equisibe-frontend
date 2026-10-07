@@ -7,7 +7,7 @@ import tailoringHero from '../../assets/tailoring-hero.png'
     <!-- Imagen -->
 <img
   :src="tailoringHero"
-  alt="Taller de sastrería a medida"
+  alt="Taller de a medida"
   class="absolute inset-0 h-full w-full object-cover"
 />
 
@@ -17,7 +17,7 @@ import tailoringHero from '../../assets/tailoring-hero.png'
     <div class="relative z-10 flex min-h-[55vh] items-center md:min-h-[70vh]">
       <div class="mx-auto w-full max-w-7xl px-5 text-white">
         <p class="text-sm uppercase tracking-widest text-white/80">
-          Sastrería a medida
+          A medida
         </p>
 
         <h1 class="mt-4 max-w-4xl text-4xl font-semibold leading-tight md:text-7xl">

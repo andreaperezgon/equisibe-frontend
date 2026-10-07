@@ -42,7 +42,7 @@ describe('AppHeader', () => {
 
     expect(wrapper.text()).toContain('Inicio')
     expect(wrapper.text()).toContain('Quiénes somos')
-    expect(wrapper.text()).toContain('Sastrería a medida')
+    expect(wrapper.text()).toContain('A medida')
     expect(wrapper.text()).toContain('Tienda')
     expect(wrapper.text()).toContain('Contáctanos')
     expect(wrapper.text()).toContain('Iniciar sesión / Regístrate')

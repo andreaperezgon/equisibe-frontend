@@ -29,7 +29,7 @@
         to="/tailoring"
         class="inline-block border-b border-current pb-1 font-semibold transition hover:opacity-60"
       >
-        Ver sastrería a medida →
+        Ver a medida →
       </RouterLink>
     </div>
   </section>
