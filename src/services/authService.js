@@ -8,3 +8,10 @@ export const registerUser = async (data) => {
 
   return response.data
 }
+export const loginUser = async (data) => {
+  await axios.post(
+    'http://localhost:8080/api/auth/login',
+    data,
+    { withCredentials: true },
+  )
+}
