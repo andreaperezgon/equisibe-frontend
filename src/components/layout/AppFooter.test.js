@@ -25,8 +25,8 @@ describe('AppFooter', () => {
     })
 
     expect(wrapper.text()).toContain('Inicio')
-    expect(wrapper.text()).toContain('Nosotros')
-    expect(wrapper.text()).toContain('Sastrería')
+    expect(wrapper.text()).toContain('Quienes somos')
+    expect(wrapper.text()).toContain('A medida')
     expect(wrapper.text()).toContain('Contacto')
   })
 

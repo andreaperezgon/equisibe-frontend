@@ -19,11 +19,11 @@ import footerLogo from '../../assets/footer.png'
         </RouterLink>
 
         <RouterLink to="/about" class="transition hover:opacity-60">
-          Nosotros
+          Quienes somos
         </RouterLink>
 
         <RouterLink to="/tailoring" class="transition hover:opacity-60">
-          Sastrería
+          A medida
         </RouterLink>
 
         <RouterLink to="/contact" class="transition hover:opacity-60">
