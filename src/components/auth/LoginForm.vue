@@ -1,7 +1,9 @@
 <script setup>
 import { reactive, ref } from 'vue'
 import { loginUser } from '../../services/authService'
+import { useAuthStore } from '../../stores/authStore'
 
+const authStore = useAuthStore()
 const form = reactive({ email: '', password: '' })
 const errorMessage = ref('')
 const successMessage = ref('')
@@ -19,7 +21,7 @@ const handleSubmit = async () => {
       email: form.email.trim(),
       password: form.password,
     })
-
+await authStore.fetchCurrentUser()
     form.password = ''
     successMessage.value = 'Has iniciado sesión correctamente.'
   } catch (error) {

@@ -15,3 +15,11 @@ export const loginUser = async (data) => {
     { withCredentials: true },
   )
 }
+export const getCurrentUser = async () => {
+  const response = await axios.get(
+    'http://localhost:8080/api/auth/me',
+    { withCredentials: true },
+  )
+
+  return response.data
+}
