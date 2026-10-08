@@ -8,6 +8,7 @@ export const registerUser = async (data) => {
 
   return response.data
 }
+
 export const loginUser = async (data) => {
   await axios.post(
     'http://localhost:8080/api/auth/login',
@@ -15,6 +16,7 @@ export const loginUser = async (data) => {
     { withCredentials: true },
   )
 }
+
 export const getCurrentUser = async () => {
   const response = await axios.get(
     'http://localhost:8080/api/auth/me',
@@ -22,4 +24,12 @@ export const getCurrentUser = async () => {
   )
 
   return response.data
+}
+
+export const logoutUser = async () => {
+  await axios.post(
+    'http://localhost:8080/api/auth/logout',
+    null,
+    { withCredentials: true },
+  )
 }

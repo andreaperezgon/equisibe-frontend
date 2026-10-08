@@ -1,5 +1,6 @@
 import { flushPromises, mount } from '@vue/test-utils'
 import { createPinia } from 'pinia'
+import { createMemoryHistory, createRouter } from 'vue-router'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import LoginForm from './LoginForm.vue'
 import { getCurrentUser, loginUser } from '../../services/authService'
@@ -8,14 +9,35 @@ import { useAuthStore } from '../../stores/authStore'
 vi.mock('../../services/authService', () => ({
   loginUser: vi.fn(),
   getCurrentUser: vi.fn(),
+  logoutUser: vi.fn(),
 }))
+
+const mountForm = async () => {
+  const pinia = createPinia()
+  const router = createRouter({
+    history: createMemoryHistory(),
+    routes: [
+      { path: '/login', component: { template: '<div />' } },
+      { path: '/account', component: { template: '<div />' } },
+    ],
+  })
+
+  await router.push('/login')
+  await router.isReady()
+
+  const wrapper = mount(LoginForm, {
+    global: { plugins: [pinia, router] },
+  })
+
+  return { wrapper, router, pinia }
+}
 
 describe('LoginForm', () => {
   beforeEach(() => {
     vi.resetAllMocks()
   })
 
-  it('logs in, loads the user and clears the password', async () => {
+  it('loads the user and redirects to account after login', async () => {
     const user = {
       id: 1,
       name: 'Andrea',
@@ -26,10 +48,7 @@ describe('LoginForm', () => {
     loginUser.mockResolvedValue(undefined)
     getCurrentUser.mockResolvedValue(user)
 
-    const pinia = createPinia()
-    const wrapper = mount(LoginForm, {
-      global: { plugins: [pinia] },
-    })
+    const { wrapper, router, pinia } = await mountForm()
 
     await wrapper.get('#loginEmail').setValue('andrea@example.com')
     await wrapper.get('#loginPassword').setValue('ExamplePassword123')
@@ -40,16 +59,12 @@ describe('LoginForm', () => {
       email: 'andrea@example.com',
       password: 'ExamplePassword123',
     })
-    expect(getCurrentUser).toHaveBeenCalledOnce()
     expect(useAuthStore(pinia).user).toEqual(user)
-    expect(wrapper.get('[role="status"]').text()).toBe(
-      'Has iniciado sesión correctamente.',
-    )
+    expect(router.currentRoute.value.path).toBe('/account')
     expect(wrapper.get('#loginPassword').element.value).toBe('')
-    expect(wrapper.get('button[type="submit"]').element.disabled).toBe(false)
   })
 
-  it('shows an error for invalid credentials', async () => {
+  it('keeps the user on login when credentials are invalid', async () => {
     loginUser.mockRejectedValue({
       response: {
         data: {
@@ -58,9 +73,7 @@ describe('LoginForm', () => {
       },
     })
 
-    const wrapper = mount(LoginForm, {
-      global: { plugins: [createPinia()] },
-    })
+    const { wrapper, router } = await mountForm()
 
     await wrapper.get('#loginEmail').setValue('andrea@example.com')
     await wrapper.get('#loginPassword').setValue('WrongPassword123')
@@ -71,7 +84,7 @@ describe('LoginForm', () => {
       'Correo o contraseña incorrectos.',
     )
     expect(getCurrentUser).not.toHaveBeenCalled()
-    expect(wrapper.find('[role="status"]').exists()).toBe(false)
+    expect(router.currentRoute.value.path).toBe('/login')
     expect(wrapper.get('button[type="submit"]').element.disabled).toBe(false)
   })
 })

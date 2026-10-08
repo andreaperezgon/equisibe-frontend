@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { getCurrentUser } from '../services/authService'
+import { getCurrentUser, logoutUser } from '../services/authService'
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -20,13 +20,18 @@ export const useAuthStore = defineStore('auth', {
       } catch (error) {
         this.user = null
 
-        if (error.response?.status !== 401 &&
-            error.response?.status !== 403) {
+        if (![401, 403].includes(error.response?.status)) {
           throw error
         }
       } finally {
         this.isSessionChecked = true
       }
+    },
+
+    async logout() {
+      await logoutUser()
+      this.user = null
+      this.isSessionChecked = true
     },
   },
 })
