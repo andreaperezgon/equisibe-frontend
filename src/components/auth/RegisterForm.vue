@@ -1,6 +1,9 @@
 <script setup>
 import { reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { registerUser } from '../../services/authService'
+
+const router = useRouter()
 
 const form = reactive({
   name: '',
@@ -10,7 +13,6 @@ const form = reactive({
 })
 
 const errorMessage = ref('')
-const successMessage = ref('')
 const isSubmitting = ref(false)
 const showPassword = ref(false)
 const showConfirmPassword = ref(false)
@@ -19,7 +21,6 @@ const handleSubmit = async () => {
   if (isSubmitting.value) return
 
   errorMessage.value = ''
-  successMessage.value = ''
 
   if (!form.name.trim()) {
     errorMessage.value = 'Introduce tu nombre.'
@@ -39,14 +40,20 @@ const handleSubmit = async () => {
       email: form.email.trim(),
       password: form.password,
     })
-
-    successMessage.value = 'Tu cuenta se ha creado correctamente.'
-    form.password = ''
-    form.confirmPassword = ''
   } catch (error) {
     errorMessage.value =
       error.response?.data?.detail ||
       'No se pudo crear la cuenta. Inténtalo de nuevo.'
+
+    isSubmitting.value = false
+    return
+  }
+
+  form.password = ''
+  form.confirmPassword = ''
+
+  try {
+    await router.replace('/login')
   } finally {
     isSubmitting.value = false
   }
@@ -86,6 +93,7 @@ const handleSubmit = async () => {
         required
         class="w-full border border-black/20 bg-transparent py-3 pl-4 pr-12"
       />
+
       <button
         type="button"
         :aria-label="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'"
@@ -110,7 +118,10 @@ const handleSubmit = async () => {
 
     <p class="mt-2 text-sm">Mínimo 8 caracteres.</p>
 
-    <label for="confirmPassword" class="mt-5 block">Repetir contraseña</label>
+    <label for="confirmPassword" class="mt-5 block">
+      Repetir contraseña
+    </label>
+
     <div class="relative mt-2">
       <input
         id="confirmPassword"
@@ -121,6 +132,7 @@ const handleSubmit = async () => {
         required
         class="w-full border border-black/20 bg-transparent py-3 pl-4 pr-12"
       />
+
       <button
         type="button"
         :aria-label="showConfirmPassword ? 'Ocultar confirmación de contraseña' : 'Mostrar confirmación de contraseña'"
@@ -143,19 +155,20 @@ const handleSubmit = async () => {
       </button>
     </div>
 
-    <p v-if="errorMessage" role="alert" class="mt-4 text-sm text-red-700">
+    <p
+      v-if="errorMessage"
+      role="alert"
+      class="mt-4 text-sm text-red-700"
+    >
       {{ errorMessage }}
     </p>
-    <p v-if="successMessage" role="status" class="mt-4 text-sm text-green-700">
-  {{ successMessage }}
-</p>
 
     <button
-  type="submit"
-  :disabled="isSubmitting"
-  class="mt-6 w-full border-2 border-black px-5 py-3 font-bold transition hover:bg-black hover:text-white disabled:cursor-wait disabled:opacity-50"
->
-  {{ isSubmitting ? 'Creando cuenta…' : 'Crear cuenta' }}
-</button>
+      type="submit"
+      :disabled="isSubmitting"
+      class="mt-6 w-full border-2 border-black px-5 py-3 font-bold transition hover:bg-black hover:text-white disabled:cursor-wait disabled:opacity-50"
+    >
+      {{ isSubmitting ? 'Creando cuenta…' : 'Crear cuenta' }}
+    </button>
   </form>
 </template>
