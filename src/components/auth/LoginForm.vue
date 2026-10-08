@@ -1,19 +1,19 @@
 <script setup>
 import { reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { loginUser } from '../../services/authService'
 import { useAuthStore } from '../../stores/authStore'
 
+const router = useRouter()
 const authStore = useAuthStore()
 const form = reactive({ email: '', password: '' })
 const errorMessage = ref('')
-const successMessage = ref('')
 const isSubmitting = ref(false)
 
 const handleSubmit = async () => {
   if (isSubmitting.value) return
 
   errorMessage.value = ''
-  successMessage.value = ''
   isSubmitting.value = true
 
   try {
@@ -21,9 +21,16 @@ const handleSubmit = async () => {
       email: form.email.trim(),
       password: form.password,
     })
-await authStore.fetchCurrentUser()
+
+    await authStore.fetchCurrentUser()
+
+    if (!authStore.isAuthenticated) {
+      errorMessage.value = 'No se pudo recuperar la sesión. Inténtalo de nuevo.'
+      return
+    }
+
     form.password = ''
-    successMessage.value = 'Has iniciado sesión correctamente.'
+    await router.replace('/account')
   } catch (error) {
     errorMessage.value =
       error.response?.data?.detail ||
@@ -58,9 +65,6 @@ await authStore.fetchCurrentUser()
 
     <p v-if="errorMessage" role="alert" class="mt-4 text-sm text-red-700">
       {{ errorMessage }}
-    </p>
-    <p v-if="successMessage" role="status" class="mt-4 text-sm text-green-700">
-      {{ successMessage }}
     </p>
 
     <button
