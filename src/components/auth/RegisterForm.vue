@@ -1,5 +1,6 @@
 <script setup>
 import { reactive, ref } from 'vue'
+import { registerUser } from '../../services/authService'
 
 const form = reactive({
   name: '',
@@ -9,11 +10,16 @@ const form = reactive({
 })
 
 const errorMessage = ref('')
+const successMessage = ref('')
+const isSubmitting = ref(false)
 const showPassword = ref(false)
 const showConfirmPassword = ref(false)
 
-const handleSubmit = () => {
+const handleSubmit = async () => {
+  if (isSubmitting.value) return
+
   errorMessage.value = ''
+  successMessage.value = ''
 
   if (!form.name.trim()) {
     errorMessage.value = 'Introduce tu nombre.'
@@ -23,6 +29,26 @@ const handleSubmit = () => {
   if (form.password !== form.confirmPassword) {
     errorMessage.value = 'Las contraseñas no coinciden.'
     return
+  }
+
+  isSubmitting.value = true
+
+  try {
+    await registerUser({
+      name: form.name.trim(),
+      email: form.email.trim(),
+      password: form.password,
+    })
+
+    successMessage.value = 'Tu cuenta se ha creado correctamente.'
+    form.password = ''
+    form.confirmPassword = ''
+  } catch (error) {
+    errorMessage.value =
+      error.response?.data?.detail ||
+      'No se pudo crear la cuenta. Inténtalo de nuevo.'
+  } finally {
+    isSubmitting.value = false
   }
 }
 </script>
@@ -120,12 +146,16 @@ const handleSubmit = () => {
     <p v-if="errorMessage" role="alert" class="mt-4 text-sm text-red-700">
       {{ errorMessage }}
     </p>
+    <p v-if="successMessage" role="status" class="mt-4 text-sm text-green-700">
+  {{ successMessage }}
+</p>
 
     <button
-      type="submit"
-      class="mt-6 w-full border-2 border-black px-5 py-3 font-bold transition hover:bg-black hover:text-white"
-    >
-      Crear cuenta
-    </button>
+  type="submit"
+  :disabled="isSubmitting"
+  class="mt-6 w-full border-2 border-black px-5 py-3 font-bold transition hover:bg-black hover:text-white disabled:cursor-wait disabled:opacity-50"
+>
+  {{ isSubmitting ? 'Creando cuenta…' : 'Crear cuenta' }}
+</button>
   </form>
 </template>
