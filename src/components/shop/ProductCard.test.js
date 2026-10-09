@@ -81,6 +81,65 @@ describe('ProductCard', () => {
     expect(wrapper.findAll('li[aria-label$="agotada"]')).toHaveLength(4)
   })
 
+  it('shows only TU when one size is available', async () => {
+    const wrapper = await mountCard({
+      name: 'Gorra Equisibé',
+      category: 'Gorras',
+      stockBySize: { TU: 3 },
+    })
+
+    expect(wrapper.findAll('li').map((item) => item.text())).toEqual([
+      'TU',
+    ])
+
+    expect(
+      wrapper.get('li[aria-label="TU: disponible"]').classes(),
+    ).not.toContain('line-through')
+  })
+
+  it('keeps TU visible when sold out', async () => {
+    const wrapper = await mountCard({
+      name: 'Gorra Equisibé',
+      category: 'Gorras',
+      stockBySize: { TU: 0 },
+    })
+
+    expect(wrapper.findAll('li').map((item) => item.text())).toEqual([
+      'TU',
+    ])
+
+    const size = wrapper.get('li[aria-label="TU: agotada"]')
+
+    expect(size.classes()).toContain('line-through')
+    expect(size.classes()).toContain('text-black/30')
+  })
+
+  it('updates sizes when the product changes', async () => {
+    const wrapper = await mountCard()
+
+    await wrapper.setProps({
+      product: {
+        ...product,
+        name: 'Gorra Equisibé',
+        category: 'Gorras',
+        stockBySize: { TU: 2 },
+      },
+    })
+
+    expect(wrapper.findAll('li').map((item) => item.text())).toEqual([
+      'TU',
+    ])
+
+    await wrapper.setProps({ product })
+
+    expect(wrapper.findAll('li').map((item) => item.text())).toEqual([
+      'S',
+      'M',
+      'L',
+      'XL',
+    ])
+  })
+
   it('shows a fallback when the product image fails to load', async () => {
     const wrapper = await mountCard()
 

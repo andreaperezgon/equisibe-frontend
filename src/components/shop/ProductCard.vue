@@ -9,7 +9,14 @@ const props = defineProps({
   },
 })
 
-const sizes = ['S', 'M', 'L', 'XL']
+const sizes = computed(() =>
+  Object.prototype.hasOwnProperty.call(
+    props.product.stockBySize ?? {},
+    'TU',
+  )
+    ? ['TU']
+    : ['S', 'M', 'L', 'XL'],
+)
 const imageFailed = ref(false)
 
 const formattedPrice = computed(() =>
