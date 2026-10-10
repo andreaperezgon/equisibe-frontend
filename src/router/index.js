@@ -10,6 +10,8 @@ import LoginView from '../views/LoginView.vue'
 import AccountView from '../views/AccountView.vue'
 import ShopView from '../views/ShopView.vue'
 import ProductDetailView from '../views/ProductDetailView.vue'
+import CartView from '../views/CartView.vue'
+
 const routes = [
   { path: '/', name: 'home', component: HomeView },
   { path: '/about', name: 'about', component: AboutView },
@@ -22,6 +24,11 @@ const routes = [
     path: '/shop/:id',
     name: 'product-detail',
     component: ProductDetailView,
+  },
+    {
+    path: '/cart',
+    name: 'cart',
+    component: CartView,
   },
   {
     path: '/account',

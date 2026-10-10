@@ -216,7 +216,14 @@ watch(() => route.params.id, loadProduct, { immediate: true })
           @click="addToCart"
         >
           Añadir al carrito
+          
         </button>
+                <RouterLink
+          to="/cart"
+          class="mt-4 block text-center text-sm underline underline-offset-4"
+        >
+          Ver carrito
+        </RouterLink>
 
         <p
           v-if="cartMessage"
