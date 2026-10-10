@@ -8,8 +8,6 @@ import { useAuthStore } from '../stores/authStore'
 const route = useRoute()
 const cart = useCartStore()
 const auth = useAuthStore()
-const authDialog = ref(null)
-const checkingSession = ref(false)
 
 const product = ref(null)
 const isLoading = ref(true)
@@ -19,6 +17,8 @@ const selectedSize = ref('')
 const imageFailed = ref(false)
 const cartMessage = ref('')
 const cartError = ref('')
+const authDialog = ref(null)
+const checkingSession = ref(false)
 
 let latestRequest = 0
 
@@ -36,6 +36,16 @@ const isSizeAvailable = (size) =>
 
 const isSoldOut = computed(() =>
   sizes.value.every((size) => !isSizeAvailable(size)),
+)
+
+const selectedStock = computed(() =>
+  product.value?.stockBySize?.[selectedSize.value] ?? 0,
+)
+
+const hasLowStock = computed(() =>
+  Boolean(selectedSize.value) &&
+  selectedStock.value >= 1 &&
+  selectedStock.value <= 3,
 )
 
 const formattedPrice = computed(() =>
@@ -227,15 +237,30 @@ watch(() => route.params.id, loadProduct, { immediate: true })
           </template>
         </p>
 
+        <p
+          v-if="hasLowStock"
+          data-testid="low-stock"
+          aria-live="polite"
+          class="mt-4 text-sm font-bold text-amber-800"
+        >
+          {{
+            selectedStock === 1
+              ? 'Queda solo 1 unidad en esta talla.'
+              : `Quedan solo ${selectedStock} unidades en esta talla.`
+          }}
+        </p>
+
         <button
           type="button"
           data-testid="add-to-cart"
-:disabled="!selectedSize || isSoldOut || checkingSession"          class="mt-8 w-full border-2 border-black bg-black px-6 py-4 font-bold text-white transition hover:bg-black/80 disabled:cursor-not-allowed disabled:opacity-40"
+          :disabled="!selectedSize || isSoldOut || checkingSession"
+          class="mt-8 w-full border-2 border-black bg-black px-6 py-4 font-bold text-white transition hover:bg-black/80 disabled:cursor-not-allowed disabled:opacity-40"
           @click="addToCart"
         >
-{{ checkingSession ? 'Comprobando sesión…' : 'Añadir al carrito' }}          
+          {{ checkingSession ? 'Comprobando sesión…' : 'Añadir al carrito' }}
         </button>
-                <RouterLink
+
+        <RouterLink
           to="/cart"
           class="mt-4 block text-center text-sm underline underline-offset-4"
         >
@@ -259,7 +284,8 @@ watch(() => route.params.id, loadProduct, { immediate: true })
         </p>
       </section>
     </div>
-        <dialog
+
+    <dialog
       ref="authDialog"
       aria-labelledby="auth-dialog-title"
       aria-describedby="auth-dialog-description"

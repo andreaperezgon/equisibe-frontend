@@ -359,4 +359,70 @@ describe('ProductDetailView', () => {
       'No se pudo comprobar tu sesión. Inténtalo de nuevo.',
     )
   })
+    it('shows low-stock information for the selected size', async () => {
+    const { wrapper } = await mountDetail()
+    await flushPromises()
+
+    expect(wrapper.find('[data-testid="low-stock"]').exists()).toBe(false)
+
+    await wrapper.get('button[aria-label="S: disponible"]').trigger('click')
+
+    expect(wrapper.get('[data-testid="low-stock"]').text()).toBe(
+      'Quedan solo 3 unidades en esta talla.',
+    )
+
+    await wrapper.get('button[aria-label="L: disponible"]').trigger('click')
+
+    expect(wrapper.find('[data-testid="low-stock"]').exists()).toBe(false)
+  })
+
+  it('shows singular wording when only one unit remains', async () => {
+    getProduct.mockResolvedValue({
+      ...product,
+      stockBySize: { S: 1, M: 0, L: 4, XL: 2 },
+    })
+
+    const { wrapper } = await mountDetail()
+    await flushPromises()
+
+    await wrapper.get('button[aria-label="S: disponible"]').trigger('click')
+
+    expect(wrapper.get('[data-testid="low-stock"]').text()).toBe(
+      'Queda solo 1 unidad en esta talla.',
+    )
+  })
+
+  it('shows low-stock information for one-size products', async () => {
+    getProduct.mockResolvedValue({
+      ...product,
+      name: 'Gorra Equisibé',
+      stockBySize: { TU: 2 },
+    })
+
+    const { wrapper } = await mountDetail()
+    await flushPromises()
+
+    await wrapper.get(
+      'button[aria-label="Talla única: disponible"]',
+    ).trigger('click')
+
+    expect(wrapper.get('[data-testid="low-stock"]').text()).toBe(
+      'Quedan solo 2 unidades en esta talla.',
+    )
+  })
+
+  it('does not show low-stock information for sold-out products', async () => {
+    getProduct.mockResolvedValue({
+      ...product,
+      stockBySize: { TU: 0 },
+    })
+
+    const { wrapper } = await mountDetail()
+    await flushPromises()
+
+    expect(wrapper.find('[data-testid="low-stock"]').exists()).toBe(false)
+    expect(
+      wrapper.get('[data-testid="add-to-cart"]').element.disabled,
+    ).toBe(true)
+  })
 })
