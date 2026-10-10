@@ -3,9 +3,13 @@ import { computed, ref, watch } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 import { getProduct } from '../services/productService'
 import { useCartStore } from '../stores/cartStore'
+import { useAuthStore } from '../stores/authStore'
 
 const route = useRoute()
 const cart = useCartStore()
+const auth = useAuthStore()
+const authDialog = ref(null)
+const checkingSession = ref(false)
 
 const product = ref(null)
 const isLoading = ref(true)
@@ -41,17 +45,32 @@ const formattedPrice = computed(() =>
   }).format(product.value?.price ?? 0),
 )
 
-const addToCart = () => {
+const addToCart = async () => {
+  if (checkingSession.value || !product.value) return
+
   cartMessage.value = ''
   cartError.value = ''
-
-  if (!product.value) return
+  checkingSession.value = true
 
   try {
+    if (!auth.isAuthenticated) {
+      await auth.fetchCurrentUser()
+    }
+
+    if (!auth.isAuthenticated) {
+      authDialog.value.showModal()
+      return
+    }
+
     cart.addItem(product.value, selectedSize.value)
     cartMessage.value = 'Prenda añadida al carrito.'
   } catch (error) {
-    cartError.value = error.message
+    cartError.value =
+      error.response || !auth.isAuthenticated
+        ? 'No se pudo comprobar tu sesión. Inténtalo de nuevo.'
+        : error.message
+  } finally {
+    checkingSession.value = false
   }
 }
 
@@ -211,12 +230,10 @@ watch(() => route.params.id, loadProduct, { immediate: true })
         <button
           type="button"
           data-testid="add-to-cart"
-          :disabled="!selectedSize || isSoldOut"
-          class="mt-8 w-full border-2 border-black bg-black px-6 py-4 font-bold text-white transition hover:bg-black/80 disabled:cursor-not-allowed disabled:opacity-40"
+:disabled="!selectedSize || isSoldOut || checkingSession"          class="mt-8 w-full border-2 border-black bg-black px-6 py-4 font-bold text-white transition hover:bg-black/80 disabled:cursor-not-allowed disabled:opacity-40"
           @click="addToCart"
         >
-          Añadir al carrito
-          
+{{ checkingSession ? 'Comprobando sesión…' : 'Añadir al carrito' }}          
         </button>
                 <RouterLink
           to="/cart"
@@ -242,5 +259,46 @@ watch(() => route.params.id, loadProduct, { immediate: true })
         </p>
       </section>
     </div>
+        <dialog
+      ref="authDialog"
+      aria-labelledby="auth-dialog-title"
+      aria-describedby="auth-dialog-description"
+      class="fixed inset-0 m-auto w-[calc(100%-2rem)] max-w-md border border-black/15 bg-white p-8 text-black shadow-xl backdrop:bg-black/50"
+    >
+      <h2 id="auth-dialog-title" class="text-2xl font-bold">
+        Tu cuenta Equisibé
+      </h2>
+
+      <p
+        id="auth-dialog-description"
+        class="mt-4 leading-relaxed text-black/70"
+      >
+        Inicia sesión o regístrate para añadir prendas al carrito y comprar.
+      </p>
+
+      <RouterLink
+        to="/login"
+        class="mt-6 block border-2 border-black bg-black px-5 py-3 text-center font-bold text-white"
+        @click="authDialog.close()"
+      >
+        Iniciar sesión
+      </RouterLink>
+
+      <RouterLink
+        to="/register"
+        class="mt-3 block border-2 border-black px-5 py-3 text-center font-bold"
+        @click="authDialog.close()"
+      >
+        Registrarme
+      </RouterLink>
+
+      <button
+        type="button"
+        class="mt-5 w-full text-center text-sm underline underline-offset-4"
+        @click="authDialog.close()"
+      >
+        Seguir mirando
+      </button>
+    </dialog>
   </main>
 </template>

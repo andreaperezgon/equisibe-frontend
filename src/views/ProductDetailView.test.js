@@ -1,10 +1,11 @@
 import { flushPromises, mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { createPinia } from 'pinia'
 import { createMemoryHistory, createRouter } from 'vue-router'
 import ProductDetailView from './ProductDetailView.vue'
 import { getProduct } from '../services/productService'
-import { createPinia } from 'pinia'
 import { useCartStore } from '../stores/cartStore'
+import { useAuthStore } from '../stores/authStore'
 
 vi.mock('../services/productService', () => ({
   getProduct: vi.fn(),
@@ -26,13 +27,20 @@ const mountDetail = async () => {
     routes: [
       { path: '/shop', component: { template: '<div />' } },
       { path: '/shop/:id', component: ProductDetailView },
+      { path: '/cart', component: { template: '<div />' } },
+      { path: '/login', component: { template: '<div />' } },
+      { path: '/register', component: { template: '<div />' } },
     ],
   })
 
   await router.push('/shop/1')
   await router.isReady()
 
-   const pinia = createPinia()
+  const pinia = createPinia()
+  const auth = useAuthStore(pinia)
+
+  auth.user = { id: 1, name: 'Cliente Equisibé' }
+  auth.isSessionChecked = true
 
   const wrapper = mount(ProductDetailView, {
     global: {
@@ -40,13 +48,17 @@ const mountDetail = async () => {
     },
   })
 
-  return { wrapper, router, cart: useCartStore(pinia) }
-
-  return { wrapper, router }
+  return {
+    wrapper,
+    router,
+    auth,
+    cart: useCartStore(pinia),
+  }
 }
 
 describe('ProductDetailView', () => {
   beforeEach(() => {
+    vi.restoreAllMocks()
     vi.resetAllMocks()
     getProduct.mockResolvedValue(product)
   })
@@ -84,7 +96,7 @@ describe('ProductDetailView', () => {
     expect(wrapper.text().replace(/\s/g, '')).toContain('49,90€')
     expect(wrapper.get('img').attributes('src')).toBe(product.imageUrl)
     expect(wrapper.get('img').attributes('alt')).toBe(product.name)
-    expect(wrapper.get('a').attributes('href')).toBe('/shop')
+    expect(wrapper.get('a[href="/shop"]').exists()).toBe(true)
   })
 
   it('allows available sizes and disables sold-out sizes', async () => {
@@ -128,6 +140,7 @@ describe('ProductDetailView', () => {
     )
 
     expect(size.text()).toBe('TU')
+
     await size.trigger('click')
 
     expect(wrapper.get('[role="status"]').text()).toContain(
@@ -135,7 +148,7 @@ describe('ProductDetailView', () => {
     )
   })
 
-  it('keeps TU visible and disabled when sold out', async () => {
+  it('keeps TU visible and disables adding when sold out', async () => {
     getProduct.mockResolvedValue({
       ...product,
       stockBySize: { TU: 0 },
@@ -145,6 +158,7 @@ describe('ProductDetailView', () => {
     await flushPromises()
 
     expect(wrapper.findAll('fieldset button')).toHaveLength(1)
+
     expect(
       wrapper.get('button[aria-label="Talla única: agotada"]')
         .element.disabled,
@@ -153,6 +167,10 @@ describe('ProductDetailView', () => {
     expect(wrapper.get('[role="status"]').text()).toBe(
       'Esta prenda está agotada en todas las tallas.',
     )
+
+    expect(
+      wrapper.get('[data-testid="add-to-cart"]').element.disabled,
+    ).toBe(true)
   })
 
   it('shows unavailable product message for a 404', async () => {
@@ -166,8 +184,13 @@ describe('ProductDetailView', () => {
     expect(wrapper.get('[role="alert"]').text()).toBe(
       'La prenda no está disponible.',
     )
-    expect(wrapper.find('button').exists()).toBe(false)
-    expect(wrapper.get('a').attributes('href')).toBe('/shop')
+
+    expect(
+      wrapper.find('[data-testid="add-to-cart"]').exists(),
+    ).toBe(false)
+
+    expect(wrapper.text()).not.toContain('Reintentar')
+    expect(wrapper.get('a[href="/shop"]').exists()).toBe(true)
   })
 
   it('allows retrying after a network error', async () => {
@@ -182,7 +205,13 @@ describe('ProductDetailView', () => {
       'No se pudo cargar la prenda. Inténtalo de nuevo.',
     )
 
-    await wrapper.get('button').trigger('click')
+    const retryButton = wrapper.findAll('button').find(
+      (button) => button.text() === 'Reintentar',
+    )
+
+    expect(retryButton).toBeDefined()
+
+    await retryButton.trigger('click')
     await flushPromises()
 
     expect(getProduct).toHaveBeenCalledTimes(2)
@@ -219,14 +248,17 @@ describe('ProductDetailView', () => {
     expect(getProduct).toHaveBeenLastCalledWith('2')
     expect(wrapper.get('h1').text()).toBe('Gorra Equisibé')
     expect(wrapper.findAll('fieldset button')).toHaveLength(1)
+
     expect(wrapper.get('[role="status"]').text()).toBe(
       'Elige una talla disponible.',
     )
+
     expect(
       wrapper.get('fieldset button').attributes('aria-pressed'),
     ).toBe('false')
   })
-    it('disables adding until an available size is selected', async () => {
+
+  it('disables adding until an available size is selected', async () => {
     const { wrapper } = await mountDetail()
     await flushPromises()
 
@@ -239,12 +271,13 @@ describe('ProductDetailView', () => {
     expect(button.element.disabled).toBe(false)
   })
 
-  it('adds the selected product and size to the cart', async () => {
+  it('adds the selected product and size for a logged-in customer', async () => {
     const { wrapper, cart } = await mountDetail()
     await flushPromises()
 
     await wrapper.get('button[aria-label="S: disponible"]').trigger('click')
     await wrapper.get('[data-testid="add-to-cart"]').trigger('click')
+    await flushPromises()
 
     expect(cart.items).toHaveLength(1)
     expect(cart.items[0]).toMatchObject({
@@ -252,6 +285,7 @@ describe('ProductDetailView', () => {
       size: 'S',
       quantity: 1,
     })
+
     expect(wrapper.text()).toContain('Prenda añadida al carrito.')
   })
 
@@ -264,13 +298,65 @@ describe('ProductDetailView', () => {
     const button = wrapper.get('[data-testid="add-to-cart"]')
 
     await button.trigger('click')
+    await flushPromises()
+
     await button.trigger('click')
+    await flushPromises()
+
     await button.trigger('click')
+    await flushPromises()
 
     expect(cart.items[0].quantity).toBe(2)
     expect(wrapper.get('[role="alert"]').text()).toBe(
       'No hay más unidades disponibles de esta talla.',
     )
+
     expect(wrapper.text()).not.toContain('Prenda añadida al carrito.')
+  })
+
+  it('opens the login dialog without adding items for a visitor', async () => {
+    const { wrapper, cart, auth } = await mountDetail()
+    await flushPromises()
+
+    auth.user = null
+    vi.spyOn(auth, 'fetchCurrentUser').mockResolvedValue(undefined)
+
+    const dialog = wrapper.get('dialog').element
+    dialog.showModal = vi.fn()
+
+    await wrapper.get('button[aria-label="S: disponible"]').trigger('click')
+    await wrapper.get('[data-testid="add-to-cart"]').trigger('click')
+    await flushPromises()
+
+    expect(auth.fetchCurrentUser).toHaveBeenCalledOnce()
+    expect(dialog.showModal).toHaveBeenCalledOnce()
+    expect(cart.items).toHaveLength(0)
+
+    expect(wrapper.get('dialog a[href="/login"]').text()).toBe(
+      'Iniciar sesión',
+    )
+
+    expect(wrapper.get('dialog a[href="/register"]').text()).toBe(
+      'Registrarme',
+    )
+  })
+
+  it('shows an error if the session cannot be checked', async () => {
+    const { wrapper, cart, auth } = await mountDetail()
+    await flushPromises()
+
+    auth.user = null
+    vi.spyOn(auth, 'fetchCurrentUser').mockRejectedValue(
+      new Error('Network Error'),
+    )
+
+    await wrapper.get('button[aria-label="S: disponible"]').trigger('click')
+    await wrapper.get('[data-testid="add-to-cart"]').trigger('click')
+    await flushPromises()
+
+    expect(cart.items).toHaveLength(0)
+    expect(wrapper.get('[role="alert"]').text()).toBe(
+      'No se pudo comprobar tu sesión. Inténtalo de nuevo.',
+    )
   })
 })
