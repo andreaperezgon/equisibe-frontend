@@ -2,8 +2,10 @@
 import { computed, ref, watch } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 import { getProduct } from '../services/productService'
+import { useCartStore } from '../stores/cartStore'
 
 const route = useRoute()
+const cart = useCartStore()
 
 const product = ref(null)
 const isLoading = ref(true)
@@ -11,6 +13,8 @@ const errorMessage = ref('')
 const notFound = ref(false)
 const selectedSize = ref('')
 const imageFailed = ref(false)
+const cartMessage = ref('')
+const cartError = ref('')
 
 let latestRequest = 0
 
@@ -37,9 +41,30 @@ const formattedPrice = computed(() =>
   }).format(product.value?.price ?? 0),
 )
 
+const addToCart = () => {
+  cartMessage.value = ''
+  cartError.value = ''
+
+  if (!product.value) return
+
+  try {
+    cart.addItem(product.value, selectedSize.value)
+    cartMessage.value = 'Prenda añadida al carrito.'
+  } catch (error) {
+    cartError.value = error.message
+  }
+}
+
+watch(selectedSize, () => {
+  cartMessage.value = ''
+  cartError.value = ''
+})
+
 const loadProduct = async () => {
   const requestId = ++latestRequest
 
+  cartMessage.value = ''
+  cartError.value = ''
   isLoading.value = true
   errorMessage.value = ''
   notFound.value = false
@@ -181,6 +206,32 @@ watch(() => route.params.id, loadProduct, { immediate: true })
           <template v-else>
             Elige una talla disponible.
           </template>
+        </p>
+
+        <button
+          type="button"
+          data-testid="add-to-cart"
+          :disabled="!selectedSize || isSoldOut"
+          class="mt-8 w-full border-2 border-black bg-black px-6 py-4 font-bold text-white transition hover:bg-black/80 disabled:cursor-not-allowed disabled:opacity-40"
+          @click="addToCart"
+        >
+          Añadir al carrito
+        </button>
+
+        <p
+          v-if="cartMessage"
+          role="status"
+          class="mt-4 text-sm text-green-800"
+        >
+          {{ cartMessage }}
+        </p>
+
+        <p
+          v-if="cartError"
+          role="alert"
+          class="mt-4 text-sm text-red-700"
+        >
+          {{ cartError }}
         </p>
       </section>
     </div>

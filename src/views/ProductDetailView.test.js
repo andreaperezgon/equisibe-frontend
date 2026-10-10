@@ -3,6 +3,8 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createMemoryHistory, createRouter } from 'vue-router'
 import ProductDetailView from './ProductDetailView.vue'
 import { getProduct } from '../services/productService'
+import { createPinia } from 'pinia'
+import { useCartStore } from '../stores/cartStore'
 
 vi.mock('../services/productService', () => ({
   getProduct: vi.fn(),
@@ -30,11 +32,15 @@ const mountDetail = async () => {
   await router.push('/shop/1')
   await router.isReady()
 
+   const pinia = createPinia()
+
   const wrapper = mount(ProductDetailView, {
     global: {
-      plugins: [router],
+      plugins: [router, pinia],
     },
   })
+
+  return { wrapper, router, cart: useCartStore(pinia) }
 
   return { wrapper, router }
 }
@@ -219,5 +225,52 @@ describe('ProductDetailView', () => {
     expect(
       wrapper.get('fieldset button').attributes('aria-pressed'),
     ).toBe('false')
+  })
+    it('disables adding until an available size is selected', async () => {
+    const { wrapper } = await mountDetail()
+    await flushPromises()
+
+    const button = wrapper.get('[data-testid="add-to-cart"]')
+
+    expect(button.element.disabled).toBe(true)
+
+    await wrapper.get('button[aria-label="S: disponible"]').trigger('click')
+
+    expect(button.element.disabled).toBe(false)
+  })
+
+  it('adds the selected product and size to the cart', async () => {
+    const { wrapper, cart } = await mountDetail()
+    await flushPromises()
+
+    await wrapper.get('button[aria-label="S: disponible"]').trigger('click')
+    await wrapper.get('[data-testid="add-to-cart"]').trigger('click')
+
+    expect(cart.items).toHaveLength(1)
+    expect(cart.items[0]).toMatchObject({
+      productId: product.id,
+      size: 'S',
+      quantity: 1,
+    })
+    expect(wrapper.text()).toContain('Prenda añadida al carrito.')
+  })
+
+  it('shows an error when adding would exceed stock', async () => {
+    const { wrapper, cart } = await mountDetail()
+    await flushPromises()
+
+    await wrapper.get('button[aria-label="XL: disponible"]').trigger('click')
+
+    const button = wrapper.get('[data-testid="add-to-cart"]')
+
+    await button.trigger('click')
+    await button.trigger('click')
+    await button.trigger('click')
+
+    expect(cart.items[0].quantity).toBe(2)
+    expect(wrapper.get('[role="alert"]').text()).toBe(
+      'No hay más unidades disponibles de esta talla.',
+    )
+    expect(wrapper.text()).not.toContain('Prenda añadida al carrito.')
   })
 })
