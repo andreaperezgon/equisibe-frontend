@@ -398,6 +398,14 @@ const checkCart = async () => {
           {{ validationMessage }}
         </p>
 
+        <RouterLink
+          v-if="validatedTotals && !isValidating"
+          to="/checkout"
+          class="mt-5 block border-2 border-black bg-black px-5 py-3 text-center font-bold text-white transition hover:bg-black/80"
+        >
+          Continuar con la compra
+        </RouterLink>
+
         <p class="mt-3 text-xs text-black/60">
           La disponibilidad puede cambiar hasta finalizar la compra.
         </p>
