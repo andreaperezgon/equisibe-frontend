@@ -11,6 +11,7 @@ import AccountView from '../views/AccountView.vue'
 import ShopView from '../views/ShopView.vue'
 import ProductDetailView from '../views/ProductDetailView.vue'
 import CartView from '../views/CartView.vue'
+import ShippingAddressesView from '../views/ShippingAddressesView.vue'
 
 const routes = [
   { path: '/', name: 'home', component: HomeView },
@@ -20,12 +21,12 @@ const routes = [
   { path: '/register', name: 'register', component: RegisterView },
   { path: '/login', name: 'login', component: LoginView },
   { path: '/shop', name: 'shop', component: ShopView },
-    {
+  {
     path: '/shop/:id',
     name: 'product-detail',
     component: ProductDetailView,
   },
-    {
+  {
     path: '/cart',
     name: 'cart',
     component: CartView,
@@ -34,6 +35,12 @@ const routes = [
     path: '/account',
     name: 'account',
     component: AccountView,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/account/addresses',
+    name: 'shipping-addresses',
+    component: ShippingAddressesView,
     meta: { requiresAuth: true },
   },
 ]
