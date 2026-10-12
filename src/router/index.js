@@ -12,6 +12,7 @@ import ShopView from '../views/ShopView.vue'
 import ProductDetailView from '../views/ProductDetailView.vue'
 import CartView from '../views/CartView.vue'
 import ShippingAddressesView from '../views/ShippingAddressesView.vue'
+import CheckoutView from '../views/CheckoutView.vue'
 
 const routes = [
   { path: '/', name: 'home', component: HomeView },
@@ -30,6 +31,12 @@ const routes = [
     path: '/cart',
     name: 'cart',
     component: CartView,
+  },
+  {
+    path: '/checkout',
+    name: 'checkout',
+    component: CheckoutView,
+    meta: { requiresAuth: true },
   },
   {
     path: '/account',
