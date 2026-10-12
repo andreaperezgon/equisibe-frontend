@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/authStore'
 
 const authStore = useAuthStore()
@@ -32,7 +32,15 @@ const handleLogout = async () => {
     <div v-if="authStore.user" class="mt-8 space-y-4">
       <p>Hola, {{ authStore.user.name }}</p>
       <p>{{ authStore.user.email }}</p>
-
+<RouterLink
+  to="/account/addresses"
+  class="block border border-black/20 p-5 transition hover:bg-black/5"
+>
+  <span class="block font-bold">Mis direcciones</span>
+  <span class="mt-2 block text-sm text-black/70">
+    Añade o modifica tus direcciones de envío.
+  </span>
+</RouterLink>
       <button
         type="button"
         :disabled="isLoggingOut"
