@@ -68,8 +68,9 @@ describe('CartView', () => {
     expect(item.get('img').attributes('src')).toBe(product.imageUrl)
     expect(item.get('a').attributes('href')).toBe('/shop/1')
     expect(summary.text().replace(/\s/g, '')).toContain('99,80€')
-    expect(summary.text()).toContain('Gastos de envío no incluidos.')
-  })
+expect(summary.text()).toContain(
+  'Envíos a España: 3,95 €. Gratis en compras de 80 € o más.',
+)  })
 
   it('increases quantity and updates the subtotal', async () => {
     const { wrapper, cart } = await mountCart((store) => {
