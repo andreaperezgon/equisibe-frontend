@@ -1,0 +1,176 @@
+<script setup>
+import { RouterLink } from 'vue-router'
+import CheckoutAddressSelector from '../components/checkout/CheckoutAddressSelector.vue'
+import CartTotals from '../components/shop/CartTotals.vue'
+import { useCheckout } from '../composables/useCheckout'
+
+const {
+  cart,
+  addresses,
+  selectedAddressId,
+  loadingAddresses,
+  checking,
+  addressError,
+  checkoutError,
+  result,
+  canValidate,
+  isValid,
+  issues,
+  loadAddresses,
+  checkCheckout,
+} = useCheckout()
+
+const formatPrice = (value) =>
+  new Intl.NumberFormat('es-ES', {
+    style: 'currency',
+    currency: 'EUR',
+  }).format(value)
+
+const itemTotal = (item) =>
+  (Math.round(item.price * 100) * item.quantity) / 100
+</script>
+
+<template>
+  <main class="mx-auto max-w-6xl px-5 py-12 md:px-8">
+    <RouterLink to="/cart" class="text-sm underline underline-offset-4">
+      ← Volver al carrito
+    </RouterLink>
+
+    <h1 class="mt-6 text-3xl md:text-4xl">
+      Revisa tu compra
+    </h1>
+
+    <div v-if="cart.items.length === 0" class="mt-8">
+      <p role="status">Tu carrito está vacío.</p>
+      <RouterLink
+        to="/shop"
+        class="mt-5 inline-block border-2 border-black px-6 py-3 font-bold"
+      >
+        Ir a la tienda
+      </RouterLink>
+    </div>
+
+    <div v-else class="mt-8 grid gap-10 lg:grid-cols-[3fr_2fr]">
+      <section aria-label="Selección de dirección">
+        <p v-if="loadingAddresses" role="status">
+          Cargando direcciones…
+        </p>
+
+        <div v-else-if="addressError">
+          <p role="alert" class="text-red-700">
+            {{ addressError }}
+          </p>
+          <button
+            type="button"
+            class="mt-4 border-2 border-black px-5 py-2"
+            @click="loadAddresses"
+          >
+            Reintentar
+          </button>
+        </div>
+
+        <template v-else>
+          <CheckoutAddressSelector
+            v-model="selectedAddressId"
+            :addresses="addresses"
+            :disabled="checking"
+          />
+
+          <button
+            type="button"
+            :disabled="checking"
+            class="mt-4 block text-sm underline underline-offset-4 disabled:opacity-40"
+            @click="loadAddresses"
+          >
+            Recargar direcciones
+          </button>
+        </template>
+      </section>
+
+      <aside
+        aria-label="Resumen de la compra"
+        class="h-fit border border-black/15 p-6"
+      >
+        <h2 class="text-xl font-bold">Tu compra</h2>
+
+        <ul class="mt-5 divide-y divide-black/15">
+          <li
+            v-for="item in cart.items"
+            :key="`${item.productId}-${item.size}`"
+            class="flex justify-between gap-4 py-4"
+          >
+            <div class="min-w-0">
+              <p class="break-words font-bold">{{ item.name }}</p>
+              <p class="mt-1 text-sm text-black/70">
+                Talla {{ item.size === 'TU' ? 'Única' : item.size }}
+                · {{ item.quantity }} ud.
+              </p>
+            </div>
+            <p class="shrink-0">{{ formatPrice(itemTotal(item)) }}</p>
+          </li>
+        </ul>
+
+        <CartTotals
+          class="mt-6"
+          :subtotal="result?.cart.subtotal ?? cart.subtotal"
+          :shipping-cost="result?.cart.shippingCost ?? null"
+          :total="result?.cart.total ?? null"
+        />
+
+        <p
+          v-if="!selectedAddressId"
+          class="mt-5 text-sm text-black/70"
+        >
+          Selecciona una dirección de envío para comprobar la compra.
+        </p>
+
+        <button
+          type="button"
+          data-testid="validate-checkout"
+          :disabled="!canValidate"
+          :aria-busy="checking"
+          class="mt-5 w-full border-2 border-black bg-black px-5 py-3 font-bold text-white disabled:cursor-not-allowed disabled:opacity-40"
+          @click="checkCheckout"
+        >
+          {{ checking ? 'Comprobando…' : 'Comprobar compra' }}
+        </button>
+
+        <p
+          v-if="checkoutError"
+          role="alert"
+          class="mt-4 text-sm text-red-700"
+        >
+          {{ checkoutError }}
+        </p>
+
+        <div
+          v-if="result && !result.cart.valid"
+          role="alert"
+          class="mt-4 text-sm text-red-700"
+        >
+          <p>Revisa las prendas del carrito antes de continuar.</p>
+          <ul v-if="issues.length" class="mt-2 list-disc space-y-2 pl-5">
+            <li v-for="(issue, index) in issues" :key="index">
+              {{ issue }}
+            </li>
+          </ul>
+          <RouterLink
+            to="/cart"
+            class="mt-3 inline-block underline underline-offset-4"
+          >
+            Modificar carrito
+          </RouterLink>
+        </div>
+
+        <p
+          v-if="isValid"
+          role="status"
+          class="mt-4 text-sm text-green-800"
+        >
+          Dirección y disponibilidad comprobadas. Revisa los importes
+          actualizados. Todavía no se ha creado ni cobrado ningún pedido.
+        </p>
+      </aside>
+    </div>
+  </main>
+</template>
