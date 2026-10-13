@@ -7,6 +7,7 @@ const teamMembers = [
     role: 'Sastrería y confección',
     description:
       'Apasionado por la confección y el trabajo artesanal, Pablo forma parte de Equisibé creando prendas cuidadas al detalle y adaptadas a cada persona.',
+    image: '/images/authors/pablin.jpg',
     reverse: false,
   },
   {
@@ -14,6 +15,7 @@ const teamMembers = [
     role: 'Diseño y patronaje',
     description:
       'Xeila combina creatividad y técnica para transformar cada idea en una prenda única, trabajando desde el diseño y el patrón hasta los últimos detalles.',
+    image: '/images/authors/xeila.jpg',
     reverse: true,
   },
 ]
@@ -21,23 +23,21 @@ const teamMembers = [
 
 <template>
   <main>
-    <!-- Introducción -->
     <section class="mx-auto max-w-7xl px-5 py-20 md:py-28">
       <p class="text-sm uppercase tracking-widest">
         Quiénes somos
       </p>
 
-<h1 class="mt-4 text-4xl font-semibold md:text-6xl">
+      <h1 class="mt-4 text-4xl font-semibold md:text-6xl">
         Las personas detrás de Equisibé
       </h1>
 
-<p class="mt-6 max-w-4xl leading-relaxed text-gray-600">
+      <p class="mt-6 max-w-4xl leading-relaxed text-gray-600">
         Equisibé nace de la pasión por la confección, el patronaje
         y la sastrería hecha a medida.
       </p>
     </section>
 
-    <!-- Equipo -->
     <section class="mx-auto max-w-7xl px-5 pb-20 md:pb-28">
       <div class="flex flex-col gap-20">
         <TeamMember
@@ -46,9 +46,9 @@ const teamMembers = [
           :name="member.name"
           :role="member.role"
           :description="member.description"
-        :reverse="member.reverse"
-          />
-
+          :image="member.image"
+          :reverse="member.reverse"
+        />
       </div>
     </section>
   </main>
