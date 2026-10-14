@@ -13,8 +13,15 @@ import ProductDetailView from '../views/ProductDetailView.vue'
 import CartView from '../views/CartView.vue'
 import ShippingAddressesView from '../views/ShippingAddressesView.vue'
 import CheckoutView from '../views/CheckoutView.vue'
+import OrderView from '../views/OrderView.vue'
 
 const routes = [
+  {
+    path: '/orders/:id',
+    name: 'order',
+    component: OrderView,
+    meta: { requiresAuth: true },
+  },
   { path: '/', name: 'home', component: HomeView },
   { path: '/about', name: 'about', component: AboutView },
   { path: '/tailoring', name: 'tailoring', component: TailoringView },

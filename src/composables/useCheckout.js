@@ -2,6 +2,7 @@ import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useCartStore } from '../stores/cartStore'
 import { getShippingAddresses } from '../services/shippingAddressService'
 import { validateCheckout } from '../services/checkoutService'
+import { createOrder, createCheckoutSession, redirectToStripe, rememberOrderCart } from '../services/orderService'
 
 export const useCheckout = () => {
   const cart = useCartStore()
@@ -13,6 +14,9 @@ export const useCheckout = () => {
   const addressError = ref('')
   const checkoutError = ref('')
   const result = ref(null)
+  const paying = ref(false)
+  const orderId = ref(null)
+  const paymentError = ref('')
 
   let active = true
   let latestCheck = 0
@@ -38,7 +42,9 @@ export const useCheckout = () => {
     selectedAddress.value?.countryCode === 'ES' &&
     !loadingAddresses.value &&
     !addressError.value &&
-    !checking.value,
+    !checking.value &&
+    !paying.value &&
+    !orderId.value,
   )
 
   const isValid = computed(() => result.value?.cart.valid === true)
@@ -187,6 +193,30 @@ export const useCheckout = () => {
     }
   }
 
+  const pay = async () => {
+    if (paying.value || (!orderId.value && (!isValid.value || !canValidate.value))) return
+    paying.value = true
+    paymentError.value = ''
+    try {
+      if (!orderId.value) {
+        const items = cart.items.map((item) => ({ ...item }))
+        const order = await createOrder(selectedAddressId.value, items)
+        orderId.value = order.id
+        rememberOrderCart(order.id, items)
+      }
+      if (!active) return
+      const session = await createCheckoutSession(orderId.value)
+      if (active) redirectToStripe(session.url)
+    } catch (error) {
+      if (!active) return
+      paymentError.value = error.response?.status === 409
+        ? 'La compra ha cambiado o el pedido ya no admite el pago. Revisa el pedido y el carrito.'
+        : describeError(error, 'No se pudo abrir el pago. Puedes volver a intentarlo.')
+    } finally {
+      if (active) paying.value = false
+    }
+  }
+
   onMounted(loadAddresses)
 
   onBeforeUnmount(() => {
@@ -209,5 +239,10 @@ export const useCheckout = () => {
     issues,
     loadAddresses,
     checkCheckout,
+    paying,
+    orderId,
+    paymentError,
+    pay,
   }
 }
+

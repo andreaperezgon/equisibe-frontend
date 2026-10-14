@@ -18,6 +18,10 @@ const {
   issues,
   loadAddresses,
   checkCheckout,
+  paying,
+  orderId,
+  paymentError,
+  pay,
 } = useCheckout()
 
 const formatPrice = (value) =>
@@ -73,12 +77,12 @@ const itemTotal = (item) =>
           <CheckoutAddressSelector
             v-model="selectedAddressId"
             :addresses="addresses"
-            :disabled="checking"
+            :disabled="checking || paying || !!orderId"
           />
 
           <button
             type="button"
-            :disabled="checking"
+            :disabled="checking || paying || !!orderId"
             class="mt-4 block text-sm underline underline-offset-4 disabled:opacity-40"
             @click="loadAddresses"
           >
@@ -163,13 +167,30 @@ const itemTotal = (item) =>
         </div>
 
         <p
-          v-if="isValid"
+          v-if="isValid && !orderId"
           role="status"
           class="mt-4 text-sm text-green-800"
         >
           Dirección y disponibilidad comprobadas. Revisa los importes
           actualizados. Todavía no se ha creado ni cobrado ningún pedido.
         </p>
+        <button
+          v-if="isValid || orderId"
+          type="button"
+          data-testid="pay-checkout"
+          :disabled="paying || (!orderId && !canValidate)"
+          :aria-busy="paying"
+          class="mt-5 w-full border-2 border-black bg-black px-5 py-3 font-bold text-white disabled:opacity-40"
+          @click="pay"
+        >
+          {{ paying ? 'Abriendo pago…' : 'Pagar con Stripe' }}
+        </button>
+        <p v-if="paymentError" role="alert" class="mt-4 text-sm text-red-700">
+          {{ paymentError }}
+        </p>
+        <RouterLink v-if="orderId" :to="`/orders/${orderId}`" class="mt-3 block text-sm underline">
+          Consultar pedido #{{ orderId }}
+        </RouterLink>
       </aside>
     </div>
   </main>

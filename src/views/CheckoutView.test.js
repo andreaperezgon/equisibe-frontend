@@ -6,6 +6,7 @@ import CheckoutView from './CheckoutView.vue'
 import { useCartStore } from '../stores/cartStore'
 import { getShippingAddresses } from '../services/shippingAddressService'
 import { validateCheckout } from '../services/checkoutService'
+import { createOrder, createCheckoutSession, redirectToStripe } from '../services/orderService'
 
 vi.mock('../services/shippingAddressService', () => ({
   getShippingAddresses: vi.fn(),
@@ -13,6 +14,13 @@ vi.mock('../services/shippingAddressService', () => ({
 
 vi.mock('../services/checkoutService', () => ({
   validateCheckout: vi.fn(),
+}))
+
+vi.mock('../services/orderService', () => ({
+  createOrder: vi.fn(),
+  createCheckoutSession: vi.fn(),
+  redirectToStripe: vi.fn(),
+  rememberOrderCart: vi.fn(),
 }))
 
 const address = {
@@ -86,6 +94,8 @@ const selectAndValidate = async (wrapper) => {
 describe('CheckoutView', () => {
   beforeEach(() => {
     vi.resetAllMocks()
+    createOrder.mockResolvedValue({ id: 12 })
+    createCheckoutSession.mockResolvedValue({ url: 'https://checkout.stripe.com/c/pay/cs_test' })
     getShippingAddresses.mockResolvedValue([address])
     validateCheckout.mockResolvedValue(validResponse())
   })
@@ -206,5 +216,56 @@ describe('CheckoutView', () => {
     expect(wrapper.text()).toContain(
       'Dirección y disponibilidad comprobadas.',
     )
+  })
+
+  it('only offers payment after successful validation', async () => {
+    const { wrapper } = await mountCheckout()
+    expect(wrapper.find('[data-testid="pay-checkout"]').exists()).toBe(false)
+    await selectAndValidate(wrapper)
+    expect(wrapper.get('[data-testid="pay-checkout"]').text()).toBe('Pagar con Stripe')
+    await wrapper.get('[data-testid="pay-checkout"]').trigger('click')
+    await flushPromises()
+    expect(createOrder).toHaveBeenCalledExactlyOnceWith(1, [
+      expect.objectContaining({ productId: 1, size: 'L', quantity: 1 }),
+    ])
+    expect(createCheckoutSession).toHaveBeenCalledExactlyOnceWith(12)
+    expect(redirectToStripe).toHaveBeenCalledExactlyOnceWith('https://checkout.stripe.com/c/pay/cs_test')
+  })
+
+  it('reuses the pending order when opening Stripe fails', async () => {
+    createCheckoutSession.mockRejectedValueOnce(new Error('Network Error'))
+    const { wrapper } = await mountCheckout()
+    await selectAndValidate(wrapper)
+    await wrapper.get('[data-testid="pay-checkout"]').trigger('click')
+    await flushPromises()
+    expect(wrapper.text()).toContain('No se pudo abrir el pago.')
+    expect(wrapper.text()).toContain('Consultar pedido #12')
+    await wrapper.get('[data-testid="pay-checkout"]').trigger('click')
+    await flushPromises()
+    expect(createOrder).toHaveBeenCalledTimes(1)
+    expect(createCheckoutSession).toHaveBeenCalledTimes(2)
+    expect(redirectToStripe).toHaveBeenCalledTimes(1)
+  })
+
+  it('blocks duplicate clicks while creating the order', async () => {
+    let finish
+    createOrder.mockImplementation(() => new Promise((resolve) => { finish = resolve }))
+    const { wrapper } = await mountCheckout()
+    await selectAndValidate(wrapper)
+    await wrapper.get('[data-testid="pay-checkout"]').trigger('click')
+    expect(wrapper.get('[data-testid="pay-checkout"]').element.disabled).toBe(true)
+    await wrapper.get('[data-testid="pay-checkout"]').trigger('click')
+    expect(createOrder).toHaveBeenCalledTimes(1)
+    finish({ id: 12 })
+    await flushPromises()
+  })
+
+  it('invalidates payment when the cart changes', async () => {
+    const { wrapper, cart } = await mountCheckout()
+    await selectAndValidate(wrapper)
+    cart.setQuantity(1, 'L', 2)
+    await flushPromises()
+    expect(wrapper.find('[data-testid="pay-checkout"]').exists()).toBe(false)
+    expect(createOrder).not.toHaveBeenCalled()
   })
 })
