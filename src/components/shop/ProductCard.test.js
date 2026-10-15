@@ -34,6 +34,7 @@ const mountCard = async (overrides = {}) => {
     },
     global: {
       plugins: [router],
+      stubs: { FavoriteButton: true },
     },
   })
 }

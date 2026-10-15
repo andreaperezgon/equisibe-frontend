@@ -1,10 +1,17 @@
 import axios from 'axios'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { createCheckoutSession, createOrder, getOrder, redirectToStripe, rememberOrderCart, restoreOrderCart } from './orderService'
+import { createCheckoutSession, createOrder, getOrder, getOrders, redirectToStripe, rememberOrderCart, restoreOrderCart } from './orderService'
 
 vi.mock('axios', () => ({ default: { get: vi.fn(), post: vi.fn() } }))
 beforeEach(() => { vi.resetAllMocks(); sessionStorage.clear() })
 describe('orderService', () => {
+  it('requests only the authenticated users order history with a timeout', async () => {
+    axios.get.mockResolvedValue({ data: [{ id: 2, status: 'PAID' }] })
+    expect(await getOrders()).toEqual([{ id: 2, status: 'PAID' }])
+    expect(axios.get).toHaveBeenCalledWith('http://localhost:8080/api/orders', {
+      withCredentials: true, timeout: 15000,
+    })
+  })
   it('sends checkout requests with credentials and a fresh CSRF token', async () => {
     axios.get.mockResolvedValue({ data: { headerName: 'X-CSRF-TOKEN', token: 'test-token' } })
     axios.post.mockResolvedValue({ data: { id: 12 } })

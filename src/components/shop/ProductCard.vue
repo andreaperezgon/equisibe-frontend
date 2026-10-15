@@ -1,6 +1,7 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { RouterLink } from 'vue-router'
+import FavoriteButton from './FavoriteButton.vue'
 
 const props = defineProps({
   product: {
@@ -86,5 +87,6 @@ const isSizeAvailable = (size) =>
         {{ size }}
       </li>
     </ul>
+    <FavoriteButton :product="product" class="mt-4" />
   </article>
 </template>

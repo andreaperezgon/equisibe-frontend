@@ -1,6 +1,7 @@
 <script setup>
 import { computed, ref, watch } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
+import FavoriteButton from '../components/shop/FavoriteButton.vue'
 import { getProduct } from '../services/productService'
 import { useCartStore } from '../stores/cartStore'
 import { useAuthStore } from '../stores/authStore'
@@ -189,6 +190,7 @@ watch(() => route.params.id, loadProduct, { immediate: true })
           {{ product.description }}
         </p>
 
+        <FavoriteButton :product="product" class="mt-6" />
         <fieldset class="mt-10">
           <legend class="font-bold">
             Selecciona tu talla

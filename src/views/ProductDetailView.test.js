@@ -45,6 +45,7 @@ const mountDetail = async () => {
   const wrapper = mount(ProductDetailView, {
     global: {
       plugins: [router, pinia],
+      stubs: { FavoriteButton: true },
     },
   })
 

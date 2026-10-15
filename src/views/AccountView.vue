@@ -2,6 +2,8 @@
 import { ref } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/authStore'
+import AccountOrders from '../components/account/AccountOrders.vue'
+import AccountFavorites from '../components/account/AccountFavorites.vue'
 
 const authStore = useAuthStore()
 const router = useRouter()
@@ -26,7 +28,7 @@ const handleLogout = async () => {
 </script>
 
 <template>
-  <main class="mx-auto w-full max-w-lg px-5 py-16">
+  <main class="mx-auto w-full max-w-3xl px-5 py-16">
     <h1 class="text-3xl font-semibold">Mi cuenta</h1>
 
     <div v-if="authStore.user" class="mt-8 space-y-4">
@@ -49,6 +51,8 @@ const handleLogout = async () => {
       >
         {{ isLoggingOut ? 'Cerrando sesión…' : 'Cerrar sesión' }}
       </button>
+      <AccountFavorites :key="authStore.user.id" />
+      <AccountOrders :key="authStore.user.id" />
     </div>
 
     <p v-if="errorMessage" role="alert" class="mt-4 text-sm text-red-700">

@@ -19,6 +19,14 @@ export const createOrder = (shippingAddressId, items) => post('/orders', {
 export const createCheckoutSession = (orderId) =>
   post(`/orders/${encodeURIComponent(orderId)}/checkout-session`, {})
 
+export const getOrders = async () => {
+  const { data } = await axios.get(`${API_URL}/orders`, {
+    withCredentials: true,
+    timeout: 15000,
+  })
+  return data
+}
+
 export const getOrder = async (orderId) => {
   const { data } = await axios.get(`${API_URL}/orders/${encodeURIComponent(orderId)}`, {
     withCredentials: true,

@@ -106,6 +106,7 @@ onBeforeUnmount(() => { active = false; clearTimeout(timer) })
       <p v-if="paymentError" role="alert" class="mt-4 text-red-700">{{ paymentError }}</p>
     </template>
     <button type="button" class="mt-6 block underline" :disabled="loading" @click="refresh">Actualizar estado</button>
+    <RouterLink to="/account" class="mt-6 mr-6 inline-block underline">Mis pedidos</RouterLink>
     <RouterLink to="/shop" class="mt-6 inline-block underline">Volver a la tienda</RouterLink>
     <RouterLink v-if="!isPaid" to="/cart" class="ml-6 inline-block underline">Volver al carrito</RouterLink>
   </main>

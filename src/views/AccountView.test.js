@@ -34,7 +34,7 @@ const mountAccount = async () => {
   await router.isReady()
 
   const wrapper = mount(AccountView, {
-    global: { plugins: [pinia, router] },
+    global: { plugins: [pinia, router], stubs: { AccountOrders: true, AccountFavorites: true } },
   })
 
   return { wrapper, store, router }
@@ -49,6 +49,7 @@ describe('AccountView', () => {
     const { wrapper } = await mountAccount()
 
     expect(wrapper.get('h1').text()).toBe('Mi cuenta')
+    expect(wrapper.find('account-orders-stub').exists()).toBe(true)
     expect(wrapper.text()).toContain('Hola, Andrea')
     expect(wrapper.text()).toContain('andrea@example.com')
   })
