@@ -1,5 +1,20 @@
-# Vue 3 + Vite
+# Equisibé · Frontend
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Interfaz web de Equisibé: información del taller, tienda, cuenta de cliente y panel administrador.
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+**Tecnologías:** Vue 3, Vite, Pinia, Vue Router y Tailwind CSS.
+
+## Documentación
+
+Toda la documentación está en la **[Wiki del frontend](https://github.com/andreaperezgon/equisibe-frontend/wiki)**, con índice, instalación, arquitectura, API, manual y pruebas.
+
+## Arranque
+
+Desde la carpeta que contiene package.json, con Node compatible:
+
+~~~bash
+npm ci
+npm run dev
+~~~
+
+Web local: http://localhost:5173 · [Repositorio del backend](https://github.com/andreaperezgon/equisibe-backend)
