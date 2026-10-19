@@ -1,4 +1,5 @@
 <script setup>
+import AdminShopSettings from '../components/admin/AdminShopSettings.vue'
 import { onBeforeUnmount, onMounted, reactive, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import {
@@ -97,6 +98,7 @@ onBeforeUnmount(() => { alive = false })
   <main class="mx-auto max-w-5xl px-5 py-10">
     <RouterLink to="/account" class="text-sm underline">← Volver al panel</RouterLink>
     <h1 class="mt-6 text-3xl">Popups promocionales</h1>
+    <AdminShopSettings class="my-8" />
     <p class="mt-3">
       El anuncio activo aparece al entrar y vuelve a aparecer al cambiar de página.
       Si hay varios activos, se muestra el actualizado más recientemente.
