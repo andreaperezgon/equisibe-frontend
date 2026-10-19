@@ -2,9 +2,10 @@ import axios from 'axios'
 
 const API_URL = 'http://localhost:8080/api'
 
-export const validateCheckout = async (shippingAddressId, items) => {
+export const validateCheckout = async (shippingAddressId, items, promoCode = '') => {
   const payload = {
     shippingAddressId,
+    ...(promoCode.trim() ? { promoCode: promoCode.trim().toUpperCase() } : {}),
     items: items.map((item) => ({
       productId: item.productId,
       size: item.size,

@@ -5,6 +5,7 @@ import CartTotals from '../components/shop/CartTotals.vue'
 import { useCheckout } from '../composables/useCheckout'
 
 const {
+  promoCode,
   cart,
   addresses,
   selectedAddressId,
@@ -30,8 +31,15 @@ const formatPrice = (value) =>
     currency: 'EUR',
   }).format(value)
 
-const itemTotal = (item) =>
-  (Math.round(item.price * 100) * item.quantity) / 100
+const itemTotal = (item) => {
+  const validated = result.value?.cart.valid
+    ? result.value.cart.items.find((line) =>
+        line.productId === item.productId && line.size === item.size)
+    : null
+  return validated
+    ? validated.lineTotal
+    : (Math.round(item.price * 100) * item.quantity) / 100
+}
 </script>
 
 <template>
@@ -113,6 +121,39 @@ const itemTotal = (item) =>
             <p class="shrink-0">{{ formatPrice(itemTotal(item)) }}</p>
           </li>
         </ul>
+
+        <div class="mt-5">
+          <label for="checkout-promo-code" class="block text-sm font-bold">
+            Código promocional
+          </label>
+          <input
+            id="checkout-promo-code"
+            v-model="promoCode"
+            maxlength="40"
+            autocomplete="off"
+            autocapitalize="characters"
+            spellcheck="false"
+            placeholder="Introduce tu código"
+            :disabled="checking || paying || !!orderId"
+            class="mt-2 w-full border border-black/30 bg-transparent p-3 uppercase disabled:opacity-50"
+          />
+          <p class="mt-2 text-sm text-black/70">
+            Pulsa Comprobar compra para aplicar o quitar el código.
+          </p>
+        </div>
+
+        <div
+          v-if="result?.cart.valid && result.cart.promoCode"
+          role="status"
+          class="mt-5 text-sm text-green-800"
+        >
+          <p>Importe antes del código: {{ formatPrice(result.cart.originalSubtotal) }}</p>
+          <p class="mt-1 font-bold">
+            {{ result.cart.promoCode }} aplicado:
+            −{{ formatPrice(result.cart.discountAmount) }}
+          </p>
+          <p class="mt-1">El descuento no se aplica al envío.</p>
+        </div>
 
         <CartTotals
           class="mt-6"

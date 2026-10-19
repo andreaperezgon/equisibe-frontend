@@ -1,4 +1,5 @@
 <script setup>
+import PromotionalPopup from './components/promotions/PromotionalPopup.vue'
 import { onMounted, ref } from 'vue'
 import AppHeader from './components/layout/AppHeader.vue'
 import AppFooter from './components/layout/AppFooter.vue'
@@ -26,4 +27,5 @@ onMounted(async () => {
   <RouterView />
 
   <AppFooter />
+  <PromotionalPopup />
 </template>

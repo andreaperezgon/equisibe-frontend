@@ -7,6 +7,7 @@ import { createOrder, createCheckoutSession, redirectToStripe, rememberOrderCart
 export const useCheckout = () => {
   const cart = useCartStore()
 
+  const promoCode = ref('')
   const addresses = ref([])
   const selectedAddressId = ref(null)
   const loadingAddresses = ref(true)
@@ -84,7 +85,7 @@ export const useCheckout = () => {
   }
 
   watch(
-    [cartSignature, selectedAddressId],
+    [cartSignature, selectedAddressId, promoCode],
     invalidate,
     { flush: 'sync' },
   )
@@ -98,6 +99,10 @@ export const useCheckout = () => {
 
     if (status === 404) {
       return 'La dirección ya no está disponible. Recarga las direcciones y selecciona otra.'
+    }
+
+    if (status === 400 && promoCode.value.trim()) {
+      return 'No se pudo aplicar el código. Comprueba que sea EQUISIBE10 o EQUISIBE20 y que la dirección y la cesta sean válidas.'
     }
 
     if (status === 400) {
@@ -159,7 +164,7 @@ export const useCheckout = () => {
     }))
 
     try {
-      const data = await validateCheckout(addressId, items)
+      const data = await validateCheckout(addressId, items, ...(promoCode.value.trim() ? [promoCode.value] : []))
 
       if (!active || requestId !== latestCheck) return
 
@@ -172,7 +177,7 @@ export const useCheckout = () => {
           )
 
           if (item) {
-            item.price = validatedItem.unitPrice
+            if (!data.cart.promoCode) item.price = validatedItem.unitPrice
             item.name = validatedItem.name
           }
         }
@@ -200,7 +205,7 @@ export const useCheckout = () => {
     try {
       if (!orderId.value) {
         const items = cart.items.map((item) => ({ ...item }))
-        const order = await createOrder(selectedAddressId.value, items)
+        const order = await createOrder(selectedAddressId.value, items, ...(promoCode.value.trim() ? [promoCode.value] : []))
         orderId.value = order.id
         rememberOrderCart(order.id, items)
       }
@@ -226,6 +231,7 @@ export const useCheckout = () => {
   })
 
   return {
+    promoCode,
     cart,
     addresses,
     selectedAddressId,

@@ -40,6 +40,7 @@ onBeforeUnmount(() => {
 
 <template>
   <section
+    id="favorites"
     aria-labelledby="favorites-heading"
     class="mt-12 border-t border-black/20 pt-8"
   >

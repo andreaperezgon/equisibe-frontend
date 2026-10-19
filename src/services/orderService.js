@@ -11,8 +11,9 @@ const post = async (path, payload) => {
   return data
 }
 
-export const createOrder = (shippingAddressId, items) => post('/orders', {
+export const createOrder = (shippingAddressId, items, promoCode = '') => post('/orders', {
   shippingAddressId,
+  ...(promoCode.trim() ? { promoCode: promoCode.trim().toUpperCase() } : {}),
   items: items.map(({ productId, size, quantity }) => ({ productId, size, quantity })),
 })
 

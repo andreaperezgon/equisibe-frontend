@@ -1,3 +1,5 @@
+import AdminPopupsView from '../views/AdminPopupsView.vue'
+import AdminOrdersView from '../views/AdminOrdersView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '../stores/authStore'
 
@@ -14,8 +16,27 @@ import CartView from '../views/CartView.vue'
 import ShippingAddressesView from '../views/ShippingAddressesView.vue'
 import CheckoutView from '../views/CheckoutView.vue'
 import OrderView from '../views/OrderView.vue'
+import AdminProductsView from '../views/AdminProductsView.vue'
 
 const routes = [
+  {
+    path: '/admin/popups',
+    name: 'admin-popups',
+    component: AdminPopupsView,
+    meta: { requiresAuth: true, requiresAdmin: true },
+  },
+  {
+    path: '/admin/orders',
+    name: 'admin-orders',
+    component: AdminOrdersView,
+    meta: { requiresAuth: true, requiresAdmin: true },
+  },
+  {
+    path: '/admin/products',
+    name: 'admin-products',
+    component: AdminProductsView,
+    meta: { requiresAuth: true, requiresAdmin: true },
+  },
   {
     path: '/orders/:id',
     name: 'order',
@@ -77,6 +98,10 @@ router.beforeEach(async (to) => {
 
   if (!authStore.isAuthenticated) {
     return { name: 'login' }
+  }
+
+  if (to.meta.requiresAdmin && authStore.user?.role !== 'ADMIN') {
+    return { name: 'account' }
   }
 
   return true

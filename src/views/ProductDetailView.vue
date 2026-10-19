@@ -1,4 +1,6 @@
 <script setup>
+import { productImageUrl } from '../utils/productImage'
+import ProductPrice from '../components/shop/ProductPrice.vue'
 import { computed, ref, watch } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 import FavoriteButton from '../components/shop/FavoriteButton.vue'
@@ -49,12 +51,6 @@ const hasLowStock = computed(() =>
   selectedStock.value <= 3,
 )
 
-const formattedPrice = computed(() =>
-  new Intl.NumberFormat('es-ES', {
-    style: 'currency',
-    currency: 'EUR',
-  }).format(product.value?.price ?? 0),
-)
 
 const addToCart = async () => {
   if (checkingSession.value || !product.value) return
@@ -162,7 +158,7 @@ watch(() => route.params.id, loadProduct, { immediate: true })
       >
         <img
           v-if="product.imageUrl && !imageFailed"
-          :src="product.imageUrl"
+          :src="productImageUrl(product.imageUrl)"
           :alt="product.name"
           class="h-full w-full object-cover"
           @error="imageFailed = true"
@@ -183,7 +179,7 @@ watch(() => route.params.id, loadProduct, { immediate: true })
         </h1>
 
         <p class="mt-5 text-2xl">
-          {{ formattedPrice }}
+          <ProductPrice :product="product" />
         </p>
 
         <p class="mt-8 whitespace-pre-line leading-relaxed text-black/70">

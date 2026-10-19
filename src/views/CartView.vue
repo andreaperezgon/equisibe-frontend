@@ -1,4 +1,5 @@
 <script setup>
+import { productImageUrl } from '../utils/productImage'
 import { onBeforeUnmount, ref, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 import CartTotals from '../components/shop/CartTotals.vue'
@@ -246,7 +247,7 @@ const checkCart = async () => {
             >
               <img
                 v-if="item.imageUrl"
-                :src="item.imageUrl"
+                :src="productImageUrl(item.imageUrl)"
                 :alt="item.name"
                 class="aspect-[3/4] w-full bg-black/5 object-cover"
               />

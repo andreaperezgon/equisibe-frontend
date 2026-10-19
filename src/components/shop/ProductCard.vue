@@ -1,4 +1,6 @@
 <script setup>
+import { productImageUrl } from '../../utils/productImage'
+import ProductPrice from './ProductPrice.vue'
 import { computed, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import FavoriteButton from './FavoriteButton.vue'
@@ -20,12 +22,6 @@ const sizes = computed(() =>
 )
 const imageFailed = ref(false)
 
-const formattedPrice = computed(() =>
-  new Intl.NumberFormat('es-ES', {
-    style: 'currency',
-    currency: 'EUR',
-  }).format(props.product.price),
-)
 
 const isSizeAvailable = (size) =>
   (props.product.stockBySize?.[size] ?? 0) > 0
@@ -42,7 +38,7 @@ const isSizeAvailable = (size) =>
       >
         <img
           v-if="product.imageUrl && !imageFailed"
-          :src="product.imageUrl"
+          :src="productImageUrl(product.imageUrl)"
           :alt="product.name"
           loading="lazy"
           class="h-full w-full object-cover transition duration-300 group-hover:scale-105"
@@ -60,7 +56,7 @@ const isSizeAvailable = (size) =>
         </h2>
 
         <p class="shrink-0">
-          {{ formattedPrice }}
+          <ProductPrice :product="product" />
         </p>
       </div>
 
