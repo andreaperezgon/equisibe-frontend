@@ -9,6 +9,11 @@ import LoginForm from '../components/auth/LoginForm.vue'
     <p class="mt-3 mb-8">Accede a tu cuenta de Equisibé.</p>
 
     <LoginForm />
+    <p class="mt-5 text-center text-sm">
+      <RouterLink to="/forgot-password" class="underline">
+        ¿Olvidaste tu contraseña?
+      </RouterLink>
+    </p>
 
     <p class="mt-6 text-center text-sm">
       ¿Todavía no tienes cuenta?
