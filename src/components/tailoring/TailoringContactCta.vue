@@ -1,5 +1,5 @@
 <template>
-  <section class="px-5 pb-20 md:pb-28">
+  <section class="editorial-cta px-5 pb-20 md:pb-28">
     <div class="mx-auto max-w-4xl text-center">
       <p class="text-sm uppercase tracking-widest">
         Tu prenda empieza aquí

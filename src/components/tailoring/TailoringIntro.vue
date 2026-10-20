@@ -2,7 +2,7 @@
 import tailoringImage from '../../assets/tailoring1.jpeg'
 </script>
 <template>
-  <section class="mx-auto max-w-7xl px-5 py-20 md:py-28">
+  <section class="editorial-intro mx-auto max-w-7xl px-5 py-20 md:py-28">
     <div class="grid gap-14 md:grid-cols-[1.1fr_1fr] md:items-center">
       
       <div>

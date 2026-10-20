@@ -22,7 +22,7 @@ const teamMembers = [
 </script>
 
 <template>
-  <main>
+  <main class="editorial-about editorial-page">
     <section class="mx-auto max-w-7xl px-5 py-20 md:py-28">
       <p class="text-sm uppercase tracking-widest">
         Quiénes somos

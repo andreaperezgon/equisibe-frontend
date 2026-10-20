@@ -7,7 +7,7 @@ import TailoringContactCta from '../components/tailoring/TailoringContactCta.vue
 
 </script>
 <template>
-  <main>
+  <main class="editorial-tailoring editorial-page">
     <TailoringHero />
     <TailoringIntro />
     <TailoringProcess />

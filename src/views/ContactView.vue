@@ -9,7 +9,7 @@ const mapEmbedUrl =
 </script>
 
 <template>
-  <main class="mx-auto max-w-7xl px-5 py-16 md:py-24">
+  <main class="contact-page mx-auto max-w-7xl px-5 py-16 md:py-24">
     <section>
       <p class="text-sm uppercase tracking-widest">
         Contáctanos
@@ -27,7 +27,15 @@ const mapEmbedUrl =
     </section>
 
     <div class="mt-14 grid gap-12 lg:grid-cols-2">
-      <ContactForm />
+      
+      <section class="contact-form-card" aria-labelledby="contact-form-heading">
+        <p class="contact-eyebrow">Estamos al otro lado</p>
+        <h2 id="contact-form-heading">Cuéntanos tu idea</h2>
+        <p class="contact-form-intro">
+          Una duda, una prenda especial o ese proyecto que tienes en mente.
+        </p>
+        <ContactForm />
+      </section>
 
       <section
         aria-labelledby="location-title"
@@ -72,3 +80,129 @@ const mapEmbedUrl =
     </div>
   </main>
 </template>
+<style scoped>
+
+/* contact-refresh:start */
+.contact-page {
+  width: 100%;
+  max-width: 1180px;
+  padding: 48px 28px 64px;
+}
+.contact-page > section:first-child > p:first-child,
+.contact-eyebrow {
+  color: #53616a;
+  font-size: 12px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.contact-page h1 {
+  max-width: 780px;
+  font-size: clamp(30px, 4vw, 46px);
+  font-weight: 500;
+  line-height: 1.5;
+}
+.contact-page > section:first-child > p:last-child {
+  max-width: 680px;
+  color: #53616a;
+  font-size: 16px;
+  line-height: 1.9;
+}
+.contact-page > div {
+  gap: 26px;
+  align-items: start;
+  margin-top: 36px;
+}
+.contact-form-card,
+.contact-page section[aria-labelledby="location-title"] {
+  min-width: 0;
+  padding: 30px;
+  border: 1px solid #d8dddf;
+  border-radius: 7px;
+  background: #f8f7f4;
+}
+.contact-page h2 {
+  margin-top: 10px;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.6;
+}
+.contact-form-intro {
+  margin: 14px 0 28px;
+  color: #53616a;
+  font-size: 15px;
+  line-height: 1.9;
+}
+.contact-page :deep(form label) {
+  color: #37434a;
+  font-size: 15px;
+  font-weight: 500;
+}
+.contact-page :deep(form input),
+.contact-page :deep(form textarea) {
+  padding: 12px 14px;
+  border: 1px solid #cbd3d6;
+  border-radius: 4px;
+  background: #fcfcfa;
+  color: #28383f;
+  font-size: 16px;
+}
+.contact-page :deep(form textarea) {
+  min-height: 160px;
+  resize: vertical;
+}
+.contact-page :deep(form input:focus-visible),
+.contact-page :deep(form textarea:focus-visible) {
+  outline: 2px solid #738b96;
+  outline-offset: 2px;
+}
+.contact-page :deep(form button[type="submit"]) {
+  min-height: 46px;
+  border: 1px solid #c3d2d8;
+  border-radius: 4px;
+  background: #e2eaed;
+  color: #28383f;
+  font-size: 15px;
+  font-weight: 500;
+}
+.contact-page :deep(form button[type="submit"]:hover:not(:disabled)) {
+  background: #d3e0e5;
+  color: #28383f;
+}
+.contact-page :deep(#contact-privacy-notice) {
+  font-size: 13px;
+  line-height: 1.8;
+}
+.contact-page address {
+  color: #53616a;
+  font-size: 15px;
+  line-height: 1.9;
+}
+.contact-page section[aria-labelledby="location-title"] > div {
+  overflow: hidden;
+  border: 1px solid #d8dddf;
+  border-radius: 5px;
+}
+.contact-page section[aria-labelledby="location-title"] > a {
+  color: #425963;
+  font-size: 14px;
+}
+.contact-page a:focus-visible,
+.contact-page :deep(button:focus-visible) {
+  outline: 2px solid #738b96;
+  outline-offset: 4px;
+}
+@media (max-width: 600px) {
+  .contact-page {
+    padding: 28px 16px 40px;
+  }
+  .contact-form-card,
+  .contact-page section[aria-labelledby="location-title"] {
+    padding: 24px 20px;
+  }
+  .contact-page h2 {
+    font-size: 22px;
+  }
+}
+/* contact-refresh:end */
+
+</style>

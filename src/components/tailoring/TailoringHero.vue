@@ -3,7 +3,7 @@ import tailoringHero from '../../assets/tailoring-hero.png'
 </script>
 
 <template>
-  <section class="relative min-h-[55vh] overflow-hidden md:min-h-[70vh]">
+  <section class="editorial-hero relative min-h-[55vh] overflow-hidden md:min-h-[70vh]">
     <!-- Imagen -->
 <img
   :src="tailoringHero"

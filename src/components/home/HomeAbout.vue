@@ -3,7 +3,7 @@ import rolloTela from '../../assets/rollo-tela.jpeg'
 </script>
 
 <template>
-  <section class="mx-auto max-w-6xl px-5 py-20 md:py-28">
+  <section class="editorial-intro mx-auto max-w-6xl px-5 py-20 md:py-28">
     <div class="grid gap-12 md:grid-cols-2 md:items-center">
 
       <div>

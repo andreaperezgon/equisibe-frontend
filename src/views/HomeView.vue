@@ -7,7 +7,7 @@ import HomeContactCta from '../components/home/HomeContactCta.vue'
 </script>
 
 <template>
-  <main>
+  <main class="editorial-home editorial-page">
     <HomeHero />
     <HomeAbout />
     <HomeServices />
