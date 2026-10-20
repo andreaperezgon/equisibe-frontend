@@ -163,6 +163,28 @@ const handleSubmit = async () => {
       {{ errorMessage }}
     </p>
 
+    <div
+      id="register-privacy-notice"
+      class="mt-6 space-y-2 text-sm leading-relaxed text-gray-700"
+    >
+      <p>Utilizamos tu nombre, correo y contraseña protegida para crear y gestionar tu cuenta. La base es la prestación del servicio de cuenta que solicitas.</p>
+      <p>
+        Equisibé es el nombre comercial; la identidad legal del responsable
+        está pendiente de completar en este borrador.
+      </p>
+      <p>
+        Puedes solicitar el ejercicio de tus derechos de protección de datos en
+        <a href="mailto:equisibe@gmail.com" class="underline">equisibe@gmail.com</a>.
+        Consulta los destinatarios, conservación y demás información en la
+        <a
+          href="/privacy"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="underline underline-offset-4"
+        >política de privacidad<span class="sr-only"> (se abre en otra pestaña)</span></a>.
+      </p>
+    </div>
+
     <button
       type="submit"
       :disabled="isSubmitting"

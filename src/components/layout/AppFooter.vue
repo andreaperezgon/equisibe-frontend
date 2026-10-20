@@ -29,6 +29,10 @@ import footerLogo from '../../assets/footer.png'
         <RouterLink to="/contact" class="transition hover:opacity-60">
           Contacto
         </RouterLink>
+      
+        <RouterLink to="/privacy" class="transition hover:opacity-60">
+          Política de privacidad
+        </RouterLink>
       </nav>
 
       <div class="flex items-center gap-5">

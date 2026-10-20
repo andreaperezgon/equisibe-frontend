@@ -20,6 +20,11 @@ import AdminProductsView from '../views/AdminProductsView.vue'
 
 const routes = [
   {
+    path: '/privacy',
+    name: 'privacy',
+    component: () => import('../views/PrivacyView.vue'),
+  },
+  {
     path: '/forgot-password',
     name: 'forgot-password',
     component: () => import('../views/ForgotPasswordView.vue'),
