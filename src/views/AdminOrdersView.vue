@@ -1,4 +1,5 @@
 <script setup>
+import AdminSectionNav from '../components/admin/AdminSectionNav.vue'
 import { computed, onMounted, onBeforeUnmount, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import AdminOrderCard from '../components/admin/AdminOrderCard.vue'
@@ -91,7 +92,8 @@ onBeforeUnmount(() => { disposed = true })
 </script>
 
 <template>
-  <main class="mx-auto max-w-5xl px-6 py-10">
+  <main class="workspace-page workspace-admin mx-auto max-w-5xl px-6 py-10">
+    <AdminSectionNav />
     <RouterLink to="/account" class="text-sm underline">
       ← Volver al panel
     </RouterLink>

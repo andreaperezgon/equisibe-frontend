@@ -26,7 +26,7 @@ const submit = async () => {
 </script>
 
 <template>
-  <main class="mx-auto w-full max-w-lg px-5 py-16">
+  <main class="workspace-page workspace-recovery mx-auto w-full max-w-lg px-5 py-16">
     <h1 class="text-3xl">Recupera tu contraseña</h1>
     <p class="mt-4">Introduce tu correo y te enviaremos un enlace para cambiarla.</p>
 

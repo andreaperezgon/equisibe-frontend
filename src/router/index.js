@@ -96,6 +96,14 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(),
+  /* account-section-scroll */
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) return savedPosition;
+    if (to.hash && to.path === '/account') {
+      return { el: to.hash, top: 24, behavior: 'auto' };
+    }
+    return { top: 0 };
+  },
   routes,
 })
 

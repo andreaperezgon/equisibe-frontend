@@ -71,7 +71,7 @@ onBeforeUnmount(() => { active = false; clearTimeout(timer) })
 </script>
 
 <template>
-  <main class="mx-auto max-w-3xl px-5 py-12 md:px-8">
+  <main class="workspace-page workspace-order mx-auto max-w-3xl px-5 py-12 md:px-8">
     <h1 class="text-3xl">Pedido #{{ orderId }}</h1>
     <p v-if="loading" role="status" class="mt-6">Consultando tu pedido…</p>
     <p v-if="error" role="alert" class="mt-6 text-red-700">{{ error }}</p>

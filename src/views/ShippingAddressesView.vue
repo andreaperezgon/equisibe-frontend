@@ -113,11 +113,12 @@ onBeforeUnmount(() => { active = false })
 </script>
 
 <template>
-  <main class="mx-auto max-w-5xl px-5 py-12 md:px-8">
+  <main class="customer-page customer-addresses mx-auto max-w-5xl px-5 py-12 md:px-8">
     <RouterLink to="/account" class="text-sm underline underline-offset-4">
       ← Volver a mi cuenta
     </RouterLink>
 
+    <p class="customer-eyebrow">Equisibé · Tus destinos</p>
     <h1 class="mt-6 text-3xl">Mis direcciones</h1>
     <p class="mt-3 text-black/70">
       Guarda tus direcciones para futuras compras. Solo realizamos envíos a España.
@@ -162,13 +163,18 @@ onBeforeUnmount(() => { active = false })
         Añadir dirección
       </button>
 
-      <p
-        v-if="!addresses.length && !formVisible"
-        role="status"
-        class="mt-6 text-black/70"
-      >
-        Todavía no tienes direcciones guardadas.
-      </p>
+      
+      <div v-if="!addresses.length && !formVisible" class="customer-empty mt-8">
+        <svg class="customer-empty-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true" focusable="false">
+    <path d="M35 20c0 9-11 20-11 20S13 29 13 20a11 11 0 1 1 22 0Z"/>
+    <circle cx="24" cy="20" r="4"/>
+    <path d="M10 40H5V27l8-4M35 23l8 4v13h-5"/>
+  </svg>
+        <p role="status">Todavía no tienes direcciones guardadas.</p>
+        <p class="mt-2 text-sm text-gray-600">
+          Guarda dónde quieres recibir tus próximas prendas.
+        </p>
+      </div>
 
       <ul
         v-if="addresses.length"
@@ -203,3 +209,4 @@ onBeforeUnmount(() => { active = false })
     </template>
   </main>
 </template>
+<style scoped src="../styles/customerPages.css"></style>

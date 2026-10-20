@@ -1,4 +1,5 @@
 <script setup>
+import AdminSectionNav from '../components/admin/AdminSectionNav.vue'
 import AdminProductSale from '../components/admin/AdminProductSale.vue'
 import { updateAdminProductSale } from '../services/adminProductService'
 
@@ -219,7 +220,8 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <main class="mx-auto max-w-6xl px-5 py-12 md:px-8">
+  <main class="workspace-page workspace-admin mx-auto max-w-6xl px-5 py-12 md:px-8">
+    <AdminSectionNav />
     <RouterLink to="/account" class="text-sm underline underline-offset-4">
       ← Volver al panel
     </RouterLink>

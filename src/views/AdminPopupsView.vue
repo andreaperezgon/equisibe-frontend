@@ -1,4 +1,5 @@
 <script setup>
+import AdminSectionNav from '../components/admin/AdminSectionNav.vue'
 import AdminShopSettings from '../components/admin/AdminShopSettings.vue'
 import { onBeforeUnmount, onMounted, reactive, ref } from 'vue'
 import { RouterLink } from 'vue-router'
@@ -95,7 +96,8 @@ onBeforeUnmount(() => { alive = false })
 </script>
 
 <template>
-  <main class="mx-auto max-w-5xl px-5 py-10">
+  <main class="workspace-page workspace-admin mx-auto max-w-5xl px-5 py-10">
+    <AdminSectionNav />
     <RouterLink to="/account" class="text-sm underline">← Volver al panel</RouterLink>
     <h1 class="mt-6 text-3xl">Popups promocionales</h1>
     <AdminShopSettings class="my-8" />

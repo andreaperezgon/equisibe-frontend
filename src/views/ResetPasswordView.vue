@@ -55,7 +55,7 @@ const submit = async () => {
 </script>
 
 <template>
-  <main class="mx-auto w-full max-w-lg px-5 py-16">
+  <main class="workspace-page workspace-recovery mx-auto w-full max-w-lg px-5 py-16">
     <h1 class="text-3xl">Nueva contraseña</h1>
 
     <div v-if="done" class="mt-6">
