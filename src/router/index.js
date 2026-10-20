@@ -1,3 +1,4 @@
+import AuthView from '../views/AuthView.vue'
 import AdminPopupsView from '../views/AdminPopupsView.vue'
 import AdminOrdersView from '../views/AdminOrdersView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
@@ -7,8 +8,6 @@ import HomeView from '../views/HomeView.vue'
 import AboutView from '../views/AboutView.vue'
 import TailoringView from '../views/TailoringView.vue'
 import ContactView from '../views/ContactView.vue'
-import RegisterView from '../views/RegisterView.vue'
-import LoginView from '../views/LoginView.vue'
 import AccountView from '../views/AccountView.vue'
 import ShopView from '../views/ShopView.vue'
 import ProductDetailView from '../views/ProductDetailView.vue'
@@ -62,8 +61,8 @@ const routes = [
   { path: '/about', name: 'about', component: AboutView },
   { path: '/tailoring', name: 'tailoring', component: TailoringView },
   { path: '/contact', name: 'contact', component: ContactView },
-  { path: '/register', name: 'register', component: RegisterView },
-  { path: '/login', name: 'login', component: LoginView },
+  { path: '/register', name: 'register', component: AuthView },
+  { path: '/login', name: 'login', component: AuthView },
   { path: '/shop', name: 'shop', component: ShopView },
   {
     path: '/shop/:id',
