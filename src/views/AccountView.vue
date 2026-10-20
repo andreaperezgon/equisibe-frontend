@@ -101,6 +101,10 @@ const handleLogout = async () => {
             <RouterLink to="/admin/products">
               Administrar productos <span aria-hidden="true">↗</span>
             </RouterLink>
+            
+            <RouterLink to="/admin/returns">
+              Devoluciones <span aria-hidden="true">↗</span>
+            </RouterLink>
             <RouterLink to="/admin/popups">
               Popups <span aria-hidden="true">↗</span>
             </RouterLink>

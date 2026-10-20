@@ -19,6 +19,12 @@ import AdminProductsView from '../views/AdminProductsView.vue'
 
 const routes = [
   {
+    path: '/admin/returns',
+    name: 'admin-returns',
+    component: () => import('../views/AdminReturnsView.vue'),
+    meta: { requiresAuth: true, requiresAdmin: true },
+  },
+  {
     path: '/privacy',
     name: 'privacy',
     component: () => import('../views/PrivacyView.vue'),

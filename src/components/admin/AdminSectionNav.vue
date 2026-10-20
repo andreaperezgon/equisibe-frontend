@@ -8,6 +8,7 @@ import { RouterLink } from 'vue-router'
     <RouterLink to="/admin/orders" active-class="selected">Pedidos</RouterLink>
     <RouterLink to="/admin/products" active-class="selected">Productos</RouterLink>
     <RouterLink to="/admin/popups" active-class="selected">Popups y tienda</RouterLink>
+  <RouterLink to="/admin/returns" active-class="selected">Devoluciones</RouterLink>
   </nav>
 </template>
 
