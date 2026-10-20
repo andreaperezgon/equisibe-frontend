@@ -169,8 +169,7 @@ const handleSubmit = async () => {
     >
       <p>Utilizamos tu nombre, correo y contraseña protegida para crear y gestionar tu cuenta. La base es la prestación del servicio de cuenta que solicitas.</p>
       <p>
-        Equisibé es el nombre comercial; la identidad legal del responsable
-        está pendiente de completar en este borrador.
+        El responsable de tus datos es Pablo Álvarez, profesional autónomo que opera bajo el nombre comercial Equisibé.
       </p>
       <p>
         Puedes solicitar el ejercicio de tus derechos de protección de datos en

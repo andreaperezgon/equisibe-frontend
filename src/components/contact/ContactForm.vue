@@ -108,8 +108,7 @@ const handleSubmit = async () => {
     >
       <p>Utilizamos tu nombre, correo y mensaje para responder a tu consulta. La base es atender tu solicitud previa a contratar o nuestro interés legítimo en responder las consultas dirigidas al taller.</p>
       <p>
-        Equisibé es el nombre comercial; la identidad legal del responsable
-        está pendiente de completar en este borrador.
+        El responsable de tus datos es Pablo Álvarez, profesional autónomo que opera bajo el nombre comercial Equisibé.
       </p>
       <p>
         Puedes solicitar el ejercicio de tus derechos de protección de datos en

@@ -5,16 +5,13 @@
 
     <aside class="my-8 border border-amber-700 bg-amber-50 p-5 text-amber-950">
       <strong>Borrador pendiente de completar.</strong>
-      Antes de publicar la tienda, deben confirmarse la identidad legal del
-      responsable, los proveedores contratados y las condiciones de conservación
-      y transferencia de datos.
+      Antes de publicar la tienda, deben confirmarse los proveedores contratados y las condiciones de conservación y transferencia de datos.
     </aside>
 
     <section>
       <h2>1. Responsable de los datos</h2>
       <p>
-        Equisibé es el nombre comercial del taller.
-        <strong>Nombre completo o razón social del responsable: pendiente de confirmar.</strong>
+        <strong>Responsable: Pablo Álvarez</strong>, profesional autónomo que opera bajo el nombre comercial Equisibé.
       </p>
       <p>
         Dirección de contacto: Plaza de la Constitución, 3, 3.º,
