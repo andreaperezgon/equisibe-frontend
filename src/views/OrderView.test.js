@@ -18,7 +18,7 @@ const response = (status) => ({
 })
 let wrapper
 const openOrder = async () => {
-  wrapper = mount(OrderView, { global: { plugins: [createPinia()] } })
+  wrapper = mount(OrderView, { global: { plugins: [createPinia()], stubs: { OrderReturns: true } } })
   await flushPromises()
 }
 beforeEach(() => { vi.resetAllMocks(); route.query = {} })

@@ -1,4 +1,5 @@
 <script setup>
+import OrderReturns from '../components/account/OrderReturns.vue'
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 import { useCartStore } from '../stores/cartStore'
@@ -103,6 +104,7 @@ onBeforeUnmount(() => { active = false; clearTimeout(timer) })
         class="mt-8 border-2 border-black bg-black px-6 py-3 font-bold text-white disabled:opacity-40" @click="pay">
         {{ paying ? 'Abriendo pago…' : 'Pagar con Stripe' }}
       </button>
+      <OrderReturns v-if="isPaid" :key="order.id" :order="order" />
       <p v-if="paymentError" role="alert" class="mt-4 text-red-700">{{ paymentError }}</p>
     </template>
     <button type="button" class="mt-6 block underline" :disabled="loading" @click="refresh">Actualizar estado</button>
