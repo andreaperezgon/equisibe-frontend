@@ -19,6 +19,11 @@ import AdminProductsView from '../views/AdminProductsView.vue'
 
 const routes = [
   {
+    path: '/returns',
+    name: 'returns-policy',
+    component: () => import('../views/ReturnsPolicyView.vue'),
+  },
+  {
     path: '/admin/returns',
     name: 'admin-returns',
     component: () => import('../views/AdminReturnsView.vue'),

@@ -150,6 +150,13 @@ onBeforeUnmount(() => { active = false })
       indicando el número de pedido y adjuntando fotografías.
     </p>
 
+    
+    <p class="returns-description">
+      Consulta los plazos, gastos y condiciones en la
+      <a href="/returns" target="_blank" rel="noopener noreferrer">
+        política de devoluciones (se abre en otra pestaña)
+      </a>.
+    </p>
     <p v-if="loading" role="status">Consultando tus solicitudes…</p>
     <p v-if="error" role="alert" class="mt-4 text-red-700">{{ error }}</p>
     <p v-if="success" role="status" class="mt-4 text-green-800">{{ success }}</p>
