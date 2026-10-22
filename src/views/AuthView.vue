@@ -2,6 +2,7 @@
 import { computed, nextTick, ref } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 import LoginForm from '../components/auth/LoginForm.vue'
+import GoogleLoginButton from '../components/auth/GoogleLoginButton.vue'
 import RegisterForm from '../components/auth/RegisterForm.vue'
 import logo from '../assets/header.png'
 
@@ -81,8 +82,12 @@ const focusHeading = async () => {
                 : 'Entra para volver a tus favoritos y seguir tus pedidos.' }}
             </p>
 
+            
+
             <RegisterForm v-if="isRegister" />
             <LoginForm v-else />
+
+            <GoogleLoginButton />
 
             <RouterLink
               v-if="!isRegister"
