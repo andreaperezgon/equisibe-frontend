@@ -40,7 +40,7 @@ const services = [
 </script>
 
 <template>
-  <section class="mx-auto max-w-7xl px-5 py-20 md:py-28">
+  <section class="editorial-services mx-auto max-w-7xl px-5 py-20 md:py-28">
     <p class="text-sm uppercase tracking-widest">
       Opciones y precios
     </p>

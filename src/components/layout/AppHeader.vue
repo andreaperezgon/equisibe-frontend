@@ -47,7 +47,7 @@ const closeMenu = () => {
       <div class="hidden items-center gap-5 lg:flex">
         <RouterLink
           :to="authStore.isAuthenticated ? '/account' : '/login'"
-          class="border-2 border-black px-5 py-2 text-sm font-bold transition hover:bg-black hover:text-white"
+          class="soft-control inline-flex min-h-11 items-center justify-center px-5 py-2.5 text-center text-sm font-bold"
         >
           {{ authStore.isAuthenticated ? 'Mi cuenta' : 'Iniciar sesión / Regístrate' }}
         </RouterLink>
@@ -114,7 +114,7 @@ const closeMenu = () => {
       <div class="mt-6 flex items-center gap-5 border-t border-black/10 pt-6">
         <RouterLink
           :to="authStore.isAuthenticated ? '/account' : '/login'"
-          class="border-2 border-black px-5 py-2 text-sm font-bold"
+          class="soft-control inline-flex min-h-11 items-center justify-center px-5 py-2.5 text-center text-sm font-bold"
           @click="closeMenu"
         >
           {{ authStore.isAuthenticated ? 'Mi cuenta' : 'Iniciar sesión / Regístrate' }}

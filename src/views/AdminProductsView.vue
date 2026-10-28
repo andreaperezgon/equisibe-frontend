@@ -1,4 +1,5 @@
 <script setup>
+import AdminSectionNav from '../components/admin/AdminSectionNav.vue'
 import AdminProductSale from '../components/admin/AdminProductSale.vue'
 import { updateAdminProductSale } from '../services/adminProductService'
 
@@ -219,7 +220,8 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <main class="mx-auto max-w-6xl px-5 py-12 md:px-8">
+  <main class="workspace-page workspace-admin mx-auto max-w-6xl px-5 py-12 md:px-8">
+    <AdminSectionNav />
     <RouterLink to="/account" class="text-sm underline underline-offset-4">
       ← Volver al panel
     </RouterLink>
@@ -287,7 +289,7 @@ onBeforeUnmount(() => {
         >
           <div class="flex flex-wrap items-start justify-between gap-5">
             <div class="min-w-0">
-              <h2 class="break-words text-xl font-bold">
+              <h2 class="wrap-break-word text-xl font-bold">
                 {{ product.name }}
               </h2>
 

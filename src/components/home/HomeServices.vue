@@ -15,7 +15,7 @@ const services = [
 </script>
 
 <template>
-  <section class="mx-auto max-w-6xl px-5 pb-20 md:pb-28">
+  <section class="editorial-home-services mx-auto max-w-6xl px-5 pb-20 md:pb-28">
     <div
       class="mx-auto grid max-w-4xl gap-10 border-t border-gray-200 pt-14 md:grid-cols-2"
     >

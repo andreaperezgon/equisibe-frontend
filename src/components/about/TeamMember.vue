@@ -24,7 +24,7 @@ defineProps({
 </script>
 
 <template>
-  <article class="grid gap-8 md:grid-cols-2 md:items-center">
+  <article class="editorial-team-member grid gap-8 md:grid-cols-2 md:items-center">
     <!-- Foto -->
     <div
       class="aspect-[4/5] overflow-hidden bg-white/40"

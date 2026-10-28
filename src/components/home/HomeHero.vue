@@ -3,7 +3,7 @@ import heroHome from '../../assets/hero-home.jpeg'
 </script>
 
 <template>
-  <section class="relative min-h-[70vh] overflow-hidden">
+  <section class="editorial-hero relative min-h-[70vh] overflow-hidden">
     <!-- Imagen de fondo -->
     <img
       :src="heroHome"

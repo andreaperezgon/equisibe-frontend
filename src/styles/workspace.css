@@ -1,0 +1,185 @@
+.workspace-page {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 44px 28px 64px;
+}
+.workspace-page h1 {
+  font-size: clamp(27px, 3vw, 34px);
+  font-weight: 500;
+  line-height: 1.5;
+}
+.workspace-page h2 {
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.6;
+}
+.workspace-page h3 {
+  font-weight: 500;
+}
+.workspace-page p,
+.workspace-page address {
+  line-height: 1.85;
+}
+.workspace-page :is(button, input, select, textarea) {
+  font: inherit;
+}
+.workspace-page :is(button, a) {
+  text-underline-offset: 5px;
+}
+.workspace-page button {
+  border-radius: 4px;
+}
+.workspace-page :is(button, a)[class~="bg-black"],
+.workspace-page button[class~="border-black"] {
+  border: 1px solid #c3d2d8;
+  background: #e2eaed;
+  color: #28383f;
+  font-size: 14px;
+  font-weight: 500;
+}
+.workspace-page :is(button, a)[class~="bg-black"]:hover,
+.workspace-page button[class~="border-black"]:hover:not(:disabled) {
+  background: #d3e0e5;
+  color: #28383f;
+}
+.workspace-page button[aria-pressed="false"] {
+  background: #f8f7f4;
+  color: #425963;
+}
+.workspace-page button[aria-pressed="true"] {
+  background: #d3e0e5;
+  border-color: #8fa7b1;
+  color: #28383f;
+}
+.workspace-page button:disabled {
+  cursor: not-allowed;
+}
+.workspace-page :is(a, button, summary):focus-visible {
+  outline: 2px solid #738b96;
+  outline-offset: 4px;
+}
+.workspace-page :is(input, textarea, select):not([type="checkbox"]):not([type="radio"]):not([type="file"]) {
+  min-height: 44px;
+  padding: 11px 13px;
+  border: 1px solid #cbd3d6;
+  border-radius: 4px;
+  background: #fcfcfa;
+  color: #28383f;
+  font-size: 16px;
+}
+.workspace-page :is(input, textarea, select):focus-visible {
+  outline: 2px solid #738b96;
+  outline-offset: 2px;
+}
+.workspace-page :is(input[type="checkbox"], input[type="radio"]) {
+  accent-color: #617e8c;
+}
+.workspace-page input[type="file"] {
+  max-width: 100%;
+  font-size: 14px;
+}
+.workspace-page input[type="file"]::file-selector-button {
+  margin-right: 12px;
+  padding: 10px 14px;
+  border: 1px solid #c3d2d8;
+  border-radius: 4px;
+  background: #e2eaed;
+  color: #28383f;
+  font: inherit;
+}
+.workspace-page label {
+  font-size: 14px;
+  line-height: 1.8;
+}
+.workspace-page :is(section, aside, article, li, form, div)[class~="border"][class*="p-"] {
+  border-color: #d8dddf;
+  border-radius: 7px;
+  background: #f8f7f4;
+}
+.workspace-page :is(section, aside, article, form)[class~="border"][class*="p-"] {
+  padding: 26px;
+}
+.workspace-page fieldset {
+  min-width: 0;
+}
+.workspace-page table {
+  width: 100%;
+  border-color: #d8dddf;
+  font-size: 14px;
+}
+.workspace-page th {
+  padding: 12px;
+  background: #e2eaed;
+  text-align: left;
+  font-weight: 500;
+}
+.workspace-page td {
+  padding: 12px;
+  border-color: #d8dddf;
+}
+.workspace-page summary {
+  color: #425963;
+  font-size: 14px;
+}
+.workspace-page [role="alert"] {
+  line-height: 1.85;
+}
+.workspace-checkout section[aria-label="Selección de dirección"] {
+  padding: 26px;
+  border: 1px solid #d8dddf;
+  border-radius: 7px;
+  background: #f8f7f4;
+}
+.workspace-checkout label[class~="border-2"] {
+  border: 1px solid #d8dddf;
+  border-radius: 5px;
+  background: #fcfcfa;
+}
+.workspace-checkout label:has(input[type="radio"]:checked) {
+  border-color: #829ca8;
+  background: #e8eef0;
+}
+.workspace-order,
+.workspace-recovery {
+  max-width: 850px;
+  width: calc(100% - 32px);
+  margin: 44px auto;
+  padding: 32px;
+  border: 1px solid #d8dddf;
+  border-radius: 7px;
+  background: #f8f7f4;
+}
+.workspace-recovery {
+  max-width: 560px;
+}
+.workspace-recovery > p {
+  margin-top: 18px;
+  font-size: 15px;
+}
+.workspace-order section[aria-label="Dirección de envío"] {
+  padding: 22px;
+  border: 1px solid #d8dddf;
+  border-radius: 5px;
+  background: #fcfcfa;
+}
+.workspace-recovery button[type="submit"] {
+  min-height: 46px;
+}
+@media (max-width: 600px) {
+  .workspace-page {
+    padding: 28px 16px 40px;
+  }
+  .workspace-order,
+  .workspace-recovery {
+    margin: 24px auto;
+    padding: 24px 20px;
+  }
+  .workspace-page :is(section, aside, article, form)[class~="border"][class*="p-"],
+  .workspace-checkout section[aria-label="Selección de dirección"] {
+    padding: 20px 16px;
+  }
+  .workspace-page h2 {
+    font-size: 20px;
+  }
+}

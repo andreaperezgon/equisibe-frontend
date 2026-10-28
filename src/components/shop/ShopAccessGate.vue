@@ -85,14 +85,14 @@ onBeforeUnmount(() => {
 
   <main v-else-if="error" class="mx-auto max-w-3xl px-6 py-20 text-center">
     <p role="alert">{{ error }}</p>
-    <button type="button" class="mt-5 border border-black px-5 py-3" @click="refresh(true)">
+    <button type="button" class="soft-control mt-5 min-h-11 px-5 py-3" @click="refresh(true)">
       Reintentar
     </button>
     <RouterLink to="/" class="mt-5 block underline">Volver a Inicio</RouterLink>
   </main>
 
   <main v-else-if="status?.closed" class="flex min-h-[65vh] items-center justify-center px-5 py-14">
-    <section aria-labelledby="shop-closed-title" class="w-full max-w-2xl border border-black/25 p-7 text-center sm:p-12">
+    <section aria-labelledby="shop-closed-title" class="shop-closed-card w-full max-w-2xl p-7 text-center sm:p-12">
       <p class="text-sm uppercase tracking-widest">Equisibé · Tienda</p>
       <h1 id="shop-closed-title" class="mt-5 text-3xl sm:text-4xl">
         {{ status.title }}
@@ -107,7 +107,7 @@ onBeforeUnmount(() => {
             { value: countdown.hours, label: 'horas' },
             { value: countdown.minutes, label: 'minutos' },
             { value: countdown.seconds, label: 'segundos' },
-          ]" :key="unit.label" class="border border-black/20 px-1 py-4">
+          ]" :key="unit.label" class="shop-countdown-unit px-1 py-4">
             <span class="block text-2xl font-bold sm:text-3xl">{{ String(unit.value).padStart(2, '0') }}</span>
             <span class="mt-2 block text-xs sm:text-sm">{{ unit.label }}</span>
           </div>
@@ -122,3 +122,35 @@ onBeforeUnmount(() => {
 
   <slot v-else-if="status" />
 </template>
+
+<style scoped>
+/* shop-closed-design */
+.shop-closed-card {
+  background: #fdfcfb;
+  border: 1px solid #dce4e7;
+  border-radius: 28px;
+  box-shadow: 0 16px 48px rgba(52, 67, 74, 0.10);
+  color: #34434a;
+}
+
+.shop-closed-card h1 {
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.shop-countdown-unit {
+  background: #eaf2f5;
+  border: 1px solid #d6e2e7;
+  border-radius: 16px;
+}
+
+@media (max-width: 480px) {
+  .shop-closed-card {
+    border-radius: 22px;
+  }
+
+  .shop-countdown-unit {
+    border-radius: 12px;
+  }
+}
+</style>

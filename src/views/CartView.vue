@@ -207,7 +207,7 @@ const checkCart = async () => {
 </script>
 
 <template>
-  <main class="mx-auto max-w-7xl px-5 py-12 md:px-8 md:py-16">
+  <main class="customer-page customer-cart mx-auto max-w-7xl px-5 py-12 md:px-8 md:py-16">
     <RouterLink
       to="/shop"
       class="text-sm underline underline-offset-4"
@@ -215,11 +215,16 @@ const checkCart = async () => {
       ← Seguir comprando
     </RouterLink>
 
+    <p class="customer-eyebrow">Equisibé · Tu selección</p>
     <h1 class="mt-6 text-3xl md:text-4xl">
       Tu carrito
     </h1>
 
-    <div v-if="cart.items.length === 0" class="mt-10">
+    <div v-if="cart.items.length === 0" class="customer-empty mt-10">
+        <svg class="customer-empty-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true" focusable="false">
+    <path d="M11 15h26l3 27H8l3-27Z"/>
+    <path d="M18 17V12a6 6 0 0 1 12 0v5"/>
+  </svg>
       <p role="status" class="text-black/70">
         Tu carrito está vacío.
       </p>
@@ -252,11 +257,13 @@ const checkCart = async () => {
                 class="aspect-[3/4] w-full bg-black/5 object-cover"
               />
 
-              <span
-                v-else
-                class="flex aspect-[3/4] items-center justify-center bg-black/5 p-2 text-center text-xs"
-              >
-                Imagen no disponible
+              
+              <span v-else class="customer-image-fallback flex aspect-[3/4] items-center justify-center bg-black/5 p-2 text-center text-xs">
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true" focusable="false">
+                  <path d="m17 9-11 9 7 9 5-4v18h12V23l5 4 7-9-11-9"/>
+                  <path d="M17 9c0 8 14 8 14 0"/>
+                </svg>
+                <span>Imagen no disponible</span>
               </span>
             </RouterLink>
 
@@ -414,3 +421,4 @@ const checkCart = async () => {
     </div>
   </main>
 </template>
+<style scoped src="../styles/customerPages.css"></style>

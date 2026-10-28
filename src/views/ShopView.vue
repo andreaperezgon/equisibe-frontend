@@ -64,7 +64,7 @@ onMounted(loadProducts)
 
       <button
         type="button"
-        class="mt-4 border-2 border-black px-5 py-2 font-bold transition hover:bg-black hover:text-white"
+        class="soft-control mt-4 min-h-11 px-5 py-2.5 font-bold"
         @click="loadProducts"
       >
         Reintentar
@@ -91,7 +91,7 @@ onMounted(loadProducts)
           <select
             id="category-filter"
             v-model="selectedCategory"
-            class="mt-2 w-full border border-black/30 bg-transparent px-4 py-3 sm:w-64"
+            class="soft-control mt-2 min-h-12 w-full px-4 py-3 text-base sm:w-64"
           >
             <option value="">
               Todas las categorías

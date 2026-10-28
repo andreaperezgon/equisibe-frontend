@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { useCartStore } from './cartStore'
 import { getCurrentUser, logoutUser } from '../services/authService'
 
 export const useAuthStore = defineStore('auth', {
@@ -17,8 +18,10 @@ export const useAuthStore = defineStore('auth', {
 
       try {
         this.user = await getCurrentUser()
+        useCartStore().setOwner(this.user?.id)
       } catch (error) {
         this.user = null
+        useCartStore().setOwner(null)
 
         if (![401, 403].includes(error.response?.status)) {
           throw error
@@ -30,6 +33,7 @@ export const useAuthStore = defineStore('auth', {
 
     async logout() {
       await logoutUser()
+      useCartStore().setOwner(null)
       this.user = null
       this.isSessionChecked = true
     },

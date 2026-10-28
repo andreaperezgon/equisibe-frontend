@@ -1,3 +1,4 @@
+import AuthView from '../views/AuthView.vue'
 import AdminPopupsView from '../views/AdminPopupsView.vue'
 import AdminOrdersView from '../views/AdminOrdersView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
@@ -7,8 +8,6 @@ import HomeView from '../views/HomeView.vue'
 import AboutView from '../views/AboutView.vue'
 import TailoringView from '../views/TailoringView.vue'
 import ContactView from '../views/ContactView.vue'
-import RegisterView from '../views/RegisterView.vue'
-import LoginView from '../views/LoginView.vue'
 import AccountView from '../views/AccountView.vue'
 import ShopView from '../views/ShopView.vue'
 import ProductDetailView from '../views/ProductDetailView.vue'
@@ -19,6 +18,32 @@ import OrderView from '../views/OrderView.vue'
 import AdminProductsView from '../views/AdminProductsView.vue'
 
 const routes = [
+  {
+    path: '/returns',
+    name: 'returns-policy',
+    component: () => import('../views/ReturnsPolicyView.vue'),
+  },
+  {
+    path: '/admin/returns',
+    name: 'admin-returns',
+    component: () => import('../views/AdminReturnsView.vue'),
+    meta: { requiresAuth: true, requiresAdmin: true },
+  },
+  {
+    path: '/privacy',
+    name: 'privacy',
+    component: () => import('../views/PrivacyView.vue'),
+  },
+  {
+    path: '/forgot-password',
+    name: 'forgot-password',
+    component: () => import('../views/ForgotPasswordView.vue'),
+  },
+  {
+    path: '/reset-password',
+    name: 'reset-password',
+    component: () => import('../views/ResetPasswordView.vue'),
+  },
   {
     path: '/admin/popups',
     name: 'admin-popups',
@@ -47,8 +72,8 @@ const routes = [
   { path: '/about', name: 'about', component: AboutView },
   { path: '/tailoring', name: 'tailoring', component: TailoringView },
   { path: '/contact', name: 'contact', component: ContactView },
-  { path: '/register', name: 'register', component: RegisterView },
-  { path: '/login', name: 'login', component: LoginView },
+  { path: '/register', name: 'register', component: AuthView },
+  { path: '/login', name: 'login', component: AuthView },
   { path: '/shop', name: 'shop', component: ShopView },
   {
     path: '/shop/:id',
@@ -82,6 +107,14 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(),
+  /* account-section-scroll */
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) return savedPosition;
+    if (to.hash && to.path === '/account') {
+      return { el: to.hash, top: 24, behavior: 'auto' };
+    }
+    return { top: 0 };
+  },
   routes,
 })
 

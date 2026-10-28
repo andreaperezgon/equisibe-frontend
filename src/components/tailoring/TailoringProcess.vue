@@ -28,7 +28,7 @@ const steps = [
 </script>
 
 <template>
-  <section class="mx-auto max-w-7xl px-5 pb-20 md:pb-28">
+  <section class="editorial-process mx-auto max-w-7xl px-5 pb-20 md:pb-28">
     <div class="border-t border-black/20 pt-14">
       <p class="text-sm uppercase tracking-widest">
         El proceso
