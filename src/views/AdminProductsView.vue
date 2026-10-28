@@ -289,7 +289,7 @@ onBeforeUnmount(() => {
         >
           <div class="flex flex-wrap items-start justify-between gap-5">
             <div class="min-w-0">
-              <h2 class="break-words text-xl font-bold">
+              <h2 class="wrap-break-word text-xl font-bold">
                 {{ product.name }}
               </h2>
 

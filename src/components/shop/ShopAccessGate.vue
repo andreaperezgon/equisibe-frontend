@@ -85,7 +85,7 @@ onBeforeUnmount(() => {
 
   <main v-else-if="error" class="mx-auto max-w-3xl px-6 py-20 text-center">
     <p role="alert">{{ error }}</p>
-    <button type="button" class="mt-5 border border-black px-5 py-3" @click="refresh(true)">
+    <button type="button" class="soft-control mt-5 min-h-11 px-5 py-3" @click="refresh(true)">
       Reintentar
     </button>
     <RouterLink to="/" class="mt-5 block underline">Volver a Inicio</RouterLink>
