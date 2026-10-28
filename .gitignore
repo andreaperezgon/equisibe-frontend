@@ -25,3 +25,9 @@ dist-ssr
 
 # Test coverage reports
 /coverage/
+
+/playwright-report/
+
+/test-results/
+
+/playwright/.auth/
